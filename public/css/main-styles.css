@@ -1,0 +1,249 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+}
+
+header {
+    position: fixed; /* фиксирует блок */
+    top: 0px; /* отступ от верхнего края окна */
+    right: 0px; /* отступ от правого края окна */
+    width: 100%;
+   
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #a0522d;
+    padding: 10px 20px;
+    color: white;   
+    z-index: 2;
+    font-family: 'Arial', sans-serif;
+
+}
+.bor{
+    width: 50px;
+    margin: 5px;    
+    border-radius: 5px;
+
+}
+.borbtn{  
+    width: 30px;
+    margin: 5px;
+    height: 25px;
+    background-color: #ff8c00;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+}
+.hr1 {
+    border: none;
+    border-top: 2px solid #ccc;
+    margin: 10px 0;
+}
+
+a {
+    font-size: 2.5rem;
+    font-style: italic;
+    font-family: 'Instrument Serif', serif;
+    color:white;
+    text-decoration: none; 
+    text-shadow: 7px 5px 10px rgb(139, 137, 137);
+    margin-right: auto;
+}
+
+
+.search-container {
+    display: flex;
+    align-items: center;
+    gap: 250px;
+    margin-right: auto;
+}
+
+header input[type="text"] {
+    width: 200px;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+input[type="checkbox"] {
+    margin: 5px;
+}
+header button {
+    padding: 5px 10px;
+    background-color: #ff8c00;
+    border: none;
+    border-radius: 3px;
+    color: white;
+    cursor: pointer;
+}
+
+.header-icons {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.icon {
+    width: 48px;
+    height: 48px;
+    cursor: pointer;
+}
+
+.filters {
+    margin-top: 50px;
+    width: 200px;
+    padding: 10px;
+    background-color: #a61818;
+    position: fixed;
+    top: 60px;
+    bottom: 0;
+    overflow-y: auto;
+    z-index: -1;
+}
+
+.filters h4 {
+ 
+    margin-top: 15px;
+} 
+
+.products {
+    position: relative;
+    margin-top: 100px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-left: 220px;
+    padding: 20px;cursor: pointer; /* Указывает, что блок кликабельный */
+    text-decoration: none; 
+}
+
+.product {
+    border: 1px solid #ccc;
+    padding: 10px;
+    text-align: center;
+    background-color: #fff;
+}
+.product {
+    cursor: pointer; /* Указывает, что блок кликабельный */
+    text-decoration: none; /* Убирает подчеркивание */
+}
+.product-image {
+    width: 100%;
+    height: 150px;
+    background-color: #eee;
+    margin-bottom: 10px;
+}
+
+.product-info {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.product-name {
+    font-size: 16px;
+}
+
+.product-price {
+    color: red;
+    font-weight: bold;
+}
+
+button {
+    top:200px;
+    left: 200px;
+    padding: 5px;
+    background-color: #ff8c00;
+    border: none;
+    cursor: pointer;
+}
+main {
+    margin-top: 60px; 
+}
+.filters {
+    width: 200px;
+    padding: 10px;
+    background-color: #f4f4f4;
+    position: fixed;
+    top: 60px;
+    bottom: 0;
+    overflow-y: auto;
+    z-index: 0;
+}
+
+.filters h4 {
+    margin-top: 15px;
+}
+
+
+.product {
+    border: 1px solid #ccc;
+    padding: 10px;
+    text-align: center;
+    background-color: #fff;
+}
+.avatar {
+    width: 80px;        /* Ширина круга */
+    height: 80px;       /* Высота круга */
+    border-radius: 50%;  /* Сделать круг */
+    overflow: hidden;    /* Обрезать изображение, если оно выходит за пределы круга */
+    object-fit: cover;   /* Обрезать и масштабировать изображение так, чтобы оно заполнило круг */
+    object-position: center; /* Центрировать изображение */
+}
+
+img{
+    width: 100%;
+    height:100%;
+    margin-bottom: 10px;
+}
+.message {
+    color: red;
+    font-size: 1.2em;
+    margin: 20px 0;
+    text-align: center;
+}
+
+.product-image {
+    width: 100%;
+    height: 150px;
+    background-color: #eee;
+    margin-bottom: 10px;
+}
+
+.product-info {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.product-name {
+    font-size: 16px;
+}
+
+.product-price {
+    color: red;
+    font-weight: bold;
+}
+
+.product button {
+    padding: 5px;
+    background-color: #ff8c00;
+    border: none;
+    cursor: pointer;
+}
+
+footer {
+    background-color: #a0522d;
+    color: white;
+    text-align: center;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    font-size: 14px;
+}

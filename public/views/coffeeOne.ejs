@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= coffee.name %></title>
+</head>
+<body>
+    <a class="logo" href="/catalog">SupremeCoffee</a>
+    <br>
+    <img style="width: 400px; height: 300px;" src="/images/coffees_img/<%= coffee.imgPath.split('\\').pop() %>">
+    <h1><%= coffee.name %></h1>
+    <p>популярность: <%= coffee.popularity %></p>
+    <p>количество: <%= coffee.quantity %> шт</p>
+    <p>Вес: <%= coffee.netWeight %> г</p>
+    <p>Тип: <%= coffee.type === 'bean' ? 'Зерно' : 'Молотая' %></p>
+    <p>Страна: <%= coffee.origin %> </p>
+    <p>Состав: <%= coffee.composition === 'arabica' ? 'Арабика' : 'Робуста' %></p>
+    <p>Инфо: <%= coffee.info %></p>
+    <p style="color: red;">Цена: <%= coffee.salePrice %> грн</p>
+
+    <button id="addToCartButton">в корзину</button>
+<br><br><br><br><br><br>
+
+    <script>
+        document.getElementById('addToCartButton').addEventListener('click', () => {
+            fetch('/cart/add', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ coffeeId: '<%= coffee._id %>' })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Товар добавлен в корзину');
+                } else {
+                    alert('Ошибка при добавлении в корзину');
+                }
+            })
+            .catch(error => {
+                console.error('Ошибка:', error);
+            });
+        });
+    </script>
+</body>
+</html>

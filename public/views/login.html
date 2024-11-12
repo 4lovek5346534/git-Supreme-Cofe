@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+</head>
+<body> 
+
+    <div class="field-container">
+        <h1 class="text1">Login</h1>
+
+        <form id="login-form" method="POST" action="/api/users/login">
+            <div class="field-container">
+              <label for="email">Email:</label>
+              <input type="text" id="email" name="email" placeholder="Enter your email" required>
+              <span class="error-message" id="name-error"></span> <!-- Контейнер для сообщения об ошибке -->
+            </div>
+            <div class="field-container">
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" placeholder="Enter your password" required>
+            </div>
+                
+            <div class="button-container">
+                <button type="button" id="back-btn" class="signup-btn">Back</button>  <!-- Изменяем тип на button -->
+                <button type="submit" class="signup-btn">Log In</button>
+            </div>
+        </form>
+        
+    </div>
+
+    <script>
+const form = document.getElementById('login-form'); // Получаем элемент формы
+form.addEventListener('submit', async (event) => {
+    event.preventDefault(); // Предотвращает перезагрузку страницы
+
+    const email = document.getElementById('email').value; // Получаем email
+    const password = document.getElementById('password').value; // Получаем пароль
+
+    console.log('Email:', email); // Логируем email для отладки
+
+    const response = await fetch('/api/users/login', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password }), // Отправляем email и password
+    });
+
+    const data = await response.json();
+
+    if (response.ok) {
+        localStorage.setItem('token', data.token);
+        // Перенаправляем на каталог без ID
+        window.location.href = '/catalog'; 
+    } else {
+        alert(data.message || 'Login failed');
+    }
+});
+
+// Обработчик события для кнопки "Back"
+const backBtn = document.getElementById('back-btn');
+backBtn.addEventListener('click', () => {
+    // Перенаправление на каталог как гость
+    window.location.href = '/register';
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Корзина</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>  
+     <a class="logo" href="/catalog">SupremeCoffee</a>
+    <h1>Корзина</h1>
+    <hr>
+    <div id="cart-items">
+        <% cartItems.forEach(item => { %>
+            <div class="cart-item">
+                <h3><%= item.coffeeName %></h3>
+                <p>Цена: <%= item.price %> руб.</p>
+                <p>Количество: 
+                    <button onclick="updateQuantity('<%= item._id %>', -1)">-</button>
+                    <span><%= item.quantity %></span>
+                    <button onclick="updateQuantity('<%= item._id %>', 1)">+</button>
+                </p>
+                <p>total price: <%= item.quantity*item.price%></p>
+            </div><hr>
+        <% }) %>
+    </div>
+    
+    <p style="color: red; font-size: 20px;">Общая сумма: <%= cartItems.reduce((total, item) => total + (item.quantity * item.price), 0) %> грн.</p>
+
+</body> 
+<script>
+        function updateQuantity(itemId, change) {
+            fetch(`/cart/update/${itemId}`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ change })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) location.reload();
+            });
+        }
+    </script>
+</html>

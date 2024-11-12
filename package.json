@@ -1,0 +1,41 @@
+{
+  "name": "nodecoffe",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SuperUser000001/Supreme-Coffe.git"
+  },
+  "keywords": [
+    "[\"server\"",
+    "\"https\"",
+    "\"nide\"",
+    "\"express\"]"
+  ],
+  "author": "sasha",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SuperUser000001/Supreme-Coffe/issues"
+  },
+  "homepage": "https://github.com/SuperUser000001/Supreme-Coffe#readme",
+  "description": "",
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "cookie-parser": "^1.4.7",
+    "dotenv": "^16.4.5",
+    "ejs": "^3.1.10",
+    "express": "^4.21.0",
+    "express-validator": "^7.2.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.7.0",
+    "multer": "^1.4.5-lts.1",
+    "pg": "^8.13.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.7"
+  }
+}

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">   
+    <title>Add Coffee</title>
+</head>
+<body> <h4><a href="/adminPage">AdminPage</a></h4>
+    <h1 class="text1">Add Coffee</h1>
+
+    <form id="coffee-form" method="POST" action="/api/coffees/addCoffee" enctype="multipart/form-data">
+        <div class="input-group">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" placeholder="Enter coffee's name" required>
+        </div>
+
+        <div class="input-group">
+            <label for="supplyPrice">Supply Price:</label>
+            <input type="text" id="supplyPrice" name="supplyPrice" placeholder="Enter supply price" required>
+        </div> 
+
+        <div class="input-group">
+            <label for="salePrice">Sale Price:</label>
+            <input type="text" id="salePrice" name="salePrice" placeholder="Enter sale price" required>
+        </div>
+
+        <div class="input-group">
+            <label for="quantity">Quantity:</label>
+            <input type="text" id="quantity" name="quantity" placeholder="Enter sale quantity" required>
+        </div>
+
+        <div class="input-group">
+            <label for="netWeight">Net Weight:</label>
+            <input type="text" id="netWeight" name="netWeight" placeholder="Enter net weight" required>
+        </div>
+
+        <div class="input-group">
+            <label>Type:</label>
+            <input type="radio" id="bean" name="type" value="bean">
+            <label for="bean">Bean</label>
+            <input type="radio" id="ground" name="type" value="ground">
+            <label for="ground">Ground</label>
+        </div>
+
+        <div class="input-group">
+            <label for="origin">Origin:</label>
+            <input type="text" id="origin" name="origin" placeholder="Enter coffee's origin" required>
+        </div>
+
+        <div class="input-group">
+            <label>Composition:</label>
+            <input type="radio" id="arabica" name="composition" value="arabica">
+            <label for="arabica">Arabica</label>
+            <input type="radio" id="robusta" name="composition" value="robusta">
+            <label for="robusta">Robusta</label>
+        </div>
+
+        <div class="input-group">
+            <label for="img">Image:</label>
+            <input type="file" id="img" name="img" accept="image/*">
+        </div>
+
+        <div class="input-group">
+            <label for="info">Info:</label>
+            <textarea id="info" name="info" placeholder="Enter coffee information"></textarea>
+        </div>
+
+        <button type="button" id="back-btn" class="signup-btn">Back</button>
+        <button type="submit" class="signup-btn">Add Coffee</button>
+    </form>
+
+    <script>
+        document.getElementById('coffee-form').addEventListener('submit', async (event) => {
+            event.preventDefault(); 
+
+            const formData = new FormData(event.target); 
+
+            try {
+                const response = await fetch('/api/coffees/addCoffee', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (response.ok) {
+                    const result = await response.json();
+                    console.log('Coffee added:', result);
+                    window.location.href = '/catalog'; 
+                } else {
+                    const error = await response.json();
+                    console.error('Error adding coffee:', error);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        });
+    </script>
+</body>
+</html>

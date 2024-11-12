@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SupremeCoffee</title>
+</head>
+<body> 
+
+    <div class="field-container">
+        <h1 class="text1">Signup</h1>
+
+        <form id="signup-form" method="POST" action="/api/users/register">
+            <div class="field-container">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" placeholder="Enter your name" required>
+                <span class="error-message" id="name-error"></span> <!-- Контейнер для сообщения об ошибке -->
+              </div>
+              
+            <div class="field-container">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" placeholder="Enter your email" required>
+            </div>
+        
+            <div class="field-container">
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" placeholder="Enter your password" required>
+            </div>
+        
+            <div class="field-container">
+                <label for="confirm-password">Confirm Password:</label>
+                <input type="password" id="confirm-password" name="confirm-password" placeholder="Confirm your password" required>
+            </div>
+        
+            <div class="button-container">
+              <button type="button" class="signup-btn" id="back-btn">Back</button> 
+                <button type="submit" class="signup-btn">Sign Up</button>
+            </div>
+             
+        </form>
+    </div>
+
+    <script>
+        const form = document.getElementById('signup-form');
+        form.addEventListener('submit', async (event) => {
+            event.preventDefault(); // Предотвращает перезагрузку страницы
+        
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirm-password').value;
+
+            // Проверка паролей
+            const passwordCheck = checkPasswords(password, confirmPassword);
+            if (!passwordCheck.success) {
+                alert(passwordCheck.message);
+                return;
+            }
+        
+            const response = await fetch('/api/users/signup', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ name, email, password }),
+            });
+        
+            const data = await response.json();
+      
+            if (response.ok) {
+               
+                window.location.href = '/login';
+            } else {
+              
+                window.location.href = '/catalog/guest';
+            }
+        });
+        const backBtn = document.getElementById('back-btn');
+    backBtn.addEventListener('click', () => {
+        // Перенаправление на страницу каталога как гость
+        window.location.href = '/register';
+    });
+        // Функция для проверки паролей
+        function checkPasswords(password, confirm_password) {
+            const minLength = 8; // Минимальная длина пароля
+
+            // Проверка на минимальную длину пароля
+            if (password.length < minLength) {
+                return { success: false, message: `Password must be at least ${minLength} characters long.` };
+            }
+
+            // Проверка, совпадают ли пароли
+            if (password !== confirm_password) {
+                return { success: false, message: 'Passwords do not match.' };
+            }
+
+            // Если всё ок
+            return { success: true, message: 'Passwords match.' };
+        }
+    </script>
+      
+</body>
+</html>

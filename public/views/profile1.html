@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+</head>
+<body>
+    <h1>User Profile</h1>
+    <p id="name">Loading...</p>
+    <p id="email"></p>
+    <p id="Role"></p>
+    <!-- Добавьте другие данные пользователя здесь -->
+    
+</body>
+
+<script>
+    async function fetchUserProfile() {
+        try {
+            const response = await fetch('/api/users/profile', {
+                method: 'GET',
+                credentials: 'include',
+            });
+    
+            console.log('Response status:', response.status); // Для отладки
+    
+            if (!response.ok) {
+                throw new Error('Не удалось загрузить профиль пользователя');
+            }
+    
+            const data = await response.json();
+    
+            // Обновите обращение к данным
+            document.getElementById('name').textContent = `Name: ${data.user.name}`;
+            document.getElementById('email').textContent = `Email: ${data.user.email}`;
+            document.getElementById('Role').textContent = `Role: ${data.user.roles}`;
+        } catch (error) {
+            console.error('Ошибка при получении данных профиля:', error);
+            document.getElementById('name').textContent = 'Ошибка загрузки профиля';
+        }
+    }
+    fetchUserProfile();
+    </script>
+    
+</html>

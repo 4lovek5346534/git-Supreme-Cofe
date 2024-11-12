@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>edit-coffees</title>
+</head>
+<style>
+    table,th,td{     
+        border: 2px solid;
+        border-collapse: collapse;
+        align-items: center;
+        height: 50px;
+    }
+    table{
+        margin-left: 22%;
+    }
+    
+    td{
+        width: 100px;
+ 
+    }
+    img{
+        width: 100px;
+        height: 100px;
+    }
+    .table-btn{
+        width: 100px;
+        height: 100px;
+        background-color: rgb(244, 227, 207);
+    }
+
+    main{
+      left: 200px;
+    }
+</style>
+<body> 
+    <h4><a href="/adminPage">AdminPage</a></h4>
+    <main> 
+         <table>
+        <tr>
+          <th>img</th>
+          <th>Name</th>
+          <th>weight</th>
+          <th>Sell-price</th>
+          <th>Supply-price</th>                 
+          <th>edit</th>
+          <th>delate</th>
+        </tr>
+            <% if (message) { %>
+                <p class="message"><%= message %></p>
+            <% } %>
+            <% coffees.forEach(coffee => { %>
+                <tr class="product" data-id="<%= coffee._id %>" data-name="<%= coffee.name %>">
+                    <td><img src="/images/coffees_img/<%= coffee.imgPath.split('\\').pop() %>" alt="<%= coffee.name %>"> </td>
+                    <td><%= coffee.name %> </td>
+                    <td><%= coffee.netWeight %> </td>
+                    <td><%= coffee.salePrice %> </td>
+                    <td><%= coffee.supplyPrice %> </td>
+                    <td><button class="table-btn edit-btn" data-id="<%= coffee._id %>"> edit </button></td>
+
+                    <td><button class="table-btn delete-btn" data-id="<%= coffee._id %>"> delete </button></td>
+                </tr>
+            <% }) %>
+        <tr>
+          <td colspan="7"><button id="add-coffee" style=" width: 100%; height: 100%; font-size: 30px; color: #000;background-color: rgb(244, 227, 207);"> Add new +</button></td>
+        </tr>
+    </main>
+</body>
+<script>
+
+document.getElementById('add-coffee').addEventListener('click', () => {
+    window.location.href = '/addCoffee'; 
+    });
+
+
+  document.querySelectorAll('.edit-btn').forEach(button => {
+    button.addEventListener('click', (event) => {
+      const productElement = event.currentTarget.closest('.product'); 
+      const productId = productElement.dataset.id;
+      const name = productElement.dataset.name;
+
+      if (productId) {
+        window.location.href = `/editCoffees/edit/${productId}`;
+      } else {
+        console.error('Не удалось получить ID продукта для редактирования');
+      }
+    });
+  });
+
+  document.querySelectorAll('.delete-btn').forEach(button => {
+    button.addEventListener('click', (event) => {
+      const productElement = event.currentTarget.closest('.product'); 
+      const productId = productElement.dataset.id;
+      
+      if (productId) {
+        fetch(`/editCoffees/delete/${productId}`, { method: 'DELETE' })
+          .then(response => {
+            if (response.ok) {
+              productElement.remove();
+            } else {
+              console.error('Ошибка при удалении продукта');
+            }
+          })
+          .catch(error => console.error('Ошибка запроса:', error));
+      } else {
+        console.error('Не удалось получить ID продукта для удаления');
+      }
+    });
+  });
+</script>
+
+</script>
+</html>

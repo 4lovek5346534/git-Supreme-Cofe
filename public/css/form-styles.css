@@ -1,0 +1,101 @@
+.field-container {
+    margin-bottom: 15px;
+    text-align: left;
+}
+
+label {
+    display: block;
+    font-size: 1em;
+    color: #4a4a4a;
+    margin-bottom: 5px;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 1em;
+}
+
+.error-message {
+    color: red;
+    font-size: 0.9em;
+    display: none;
+}
+.button-container {
+    margin-top: 20px;
+}
+
+.signup-btn {
+    background-color: #7d5a50;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.signup-btn:hover {
+    background-color: #5e4033;
+}
+.field-container {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+/* Labels Styling */
+label {
+    font-size: 1.1em;
+    color: #fff; /* White color for labels */
+}
+
+/* Input Fields Styling */
+input {
+    width: 100%;
+    padding: 10px;
+    border-radius: 10px;
+    border: none;
+    outline: none;
+    background-color: #f0f0f0;
+    font-size: 1em;
+    box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Error Message Styling */
+.error-message {
+    color: red;
+    font-size: 0.9em;
+    display: none;
+}
+
+/* Button Container */
+.button-container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+/* Button Styles */
+button {
+    background-color: #fff;
+    border: none;
+    border-radius: 25px;
+    padding: 10px 20px;
+    font-size: 1em;
+    color: #A5673F;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 45%;
+}
+
+button:hover {
+    background-color: #d1b59e; /* Hover color for buttons */
+}
+
+/* Adjustments for the button text */
+button:focus {
+    outline: none;
+}

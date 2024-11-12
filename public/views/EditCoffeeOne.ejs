@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= coffee.name %></title>
+</head>
+<style>
+    table, th, td {     
+        border: 2px solid;
+        border-collapse: collapse;
+        height: 50px;
+    }
+    table {
+        margin: 0 auto;
+        width: 80%;
+    }
+    th, td {
+        padding: 10px;
+        text-align: left;
+    }
+    img {
+        width: 400px;
+        height: 300px;
+    }
+    .hidden {
+        display: none;
+    }
+    .large-textarea {
+        width: 100%;
+        height: 100px;
+    }
+     .column1 {
+        width: 20%; 
+    }
+    .column2 {
+        width: 70%; 
+    }
+    button{
+        width: 20%;
+        height: 50px;
+        font-size: 25px;
+    }
+</style>
+<body>
+    <a class="logo" href="/editCoffees">Edit Coffees</a>
+    <br><br>
+    <table id="coffeeTable">
+        <tr>
+            <th colspan="2" style="text-align: center;">
+                <img src="/images/coffees_img/<%= coffee.imgPath.split('\\').pop() %>">
+            </th>
+        </tr>
+        <tr>
+            <td class="column1">Название:</td>
+            <td class="editable" data-key="name"><%= coffee.name %></td>
+        </tr>
+        <tr>
+            <td class="column1">Цена продажи (грн):</td>
+            <td class="editable" data-key="salePrice"><%= coffee.salePrice %></td>
+        </tr>
+        <tr>
+            <td class="column1">Цена закупки (грн):</td>
+            <td class="editable" data-key="supplyPrice"><%= coffee.supplyPrice %></td>
+        </tr>
+        <tr>
+            <td class="column1">Количество (шт):</td>
+            <td class="editable" data-key="quantity"><%= coffee.quantity %></td>
+        </tr>
+        <tr>
+            <td class="column1">Вес (г):</td>
+            <td class="editable" data-key="netWeight"><%= coffee.netWeight %></td>
+        </tr>
+        <tr>
+            <td class="column1">Страна:</td>
+            <td class="editable" data-key="origin"><%= coffee.origin %></td>
+        </tr>
+        <tr>
+            <td class="column1">Тип:</td>
+            <td class="editable" data-key="type"><%= coffee.type === 'bean' ? 'Зерно' : 'Молотая' %></td>
+        </tr>
+        <tr>
+            <td class="column1">Состав:</td>
+            <td class="editable" data-key="composition"><%= coffee.composition === 'arabica' ? 'Арабика' : 'Робуста' %></td>
+        </tr>
+        <tr>
+            <td colspan="2" class="editable" data-key="info">Инфо: <%= coffee.info %></td>
+        </tr>
+    </table>
+    <center>
+    <div id="actions" class="hidden">
+        <button id="saveBtn">Сохранить</button>
+        <button id="cancelBtn">Отмена</button>
+    </div></center>
+    <br><br><br><br><br><br>
+</body>
+
+<script>
+    const originalData = {};
+    let editedData = {};
+    const coffeeId = "<%= coffee._id %>";
+    const table = document.getElementById('coffeeTable');
+    const actionsDiv = document.getElementById('actions');
+
+    // Инициализация оригинальных данных
+    document.querySelectorAll('.editable').forEach(cell => {
+        originalData[cell.dataset.key] = cell.innerText;
+    });
+
+    // Редактирование ячейки по двойному клику
+    table.addEventListener('dblclick', (event) => {
+        const target = event.target;
+        if (target.classList.contains('editable')) {
+            const key = target.dataset.key;
+            const currentValue = target.innerText.trim();
+
+            target.innerHTML = '';
+
+            if (key === 'type') {
+                // Выпадающий список для "Тип"
+                const select = document.createElement('select');
+                select.innerHTML = `
+                    <option value="bean" ${currentValue === 'Зерно' ? 'selected' : ''}>Зерно</option>
+                    <option value="ground" ${currentValue === 'Молотая' ? 'selected' : ''}>Молотая</option>
+                `;
+                target.appendChild(select);
+
+                select.addEventListener('blur', () => {
+                    const newValue = select.options[select.selectedIndex].text;
+                    target.innerText = newValue;
+                    editedData[key] = select.value;
+                    actionsDiv.classList.remove('hidden');
+                });
+
+            } else if (key === 'composition') {
+                // Выпадающий список для "Состав"
+                const select = document.createElement('select');
+                select.innerHTML = `
+                    <option value="arabica" ${currentValue === 'Арабика' ? 'selected' : ''}>Арабика</option>
+                    <option value="robusta" ${currentValue === 'Робуста' ? 'selected' : ''}>Робуста</option>
+                `;
+                target.appendChild(select);
+
+                select.addEventListener('blur', () => {
+                    const newValue = select.options[select.selectedIndex].text;
+                    target.innerText = newValue;
+                    editedData[key] = select.value;
+                    actionsDiv.classList.remove('hidden');
+                });
+
+            } else if (key === 'info') {
+                // Большой текстовый блок для "Инфо"
+                const textarea = document.createElement('textarea');
+                textarea.classList.add('large-textarea');
+                textarea.value = currentValue.replace("Инфо: ", ""); // убираем метку "Инфо: "
+                target.appendChild(textarea);
+
+                textarea.focus();
+                textarea.addEventListener('blur', () => {
+                    const newValue = textarea.value.trim();
+                    target.innerText = "Инфо: " + newValue;
+
+                    if (newValue !== originalData[key]) {
+                        editedData[key] = newValue;
+                        actionsDiv.classList.remove('hidden');
+                    } else {
+                        delete editedData[key];
+                        if (Object.keys(editedData).length === 0) {
+                            actionsDiv.classList.add('hidden');
+                        }
+                    }
+                });
+
+            } else {
+                // Обычное текстовое поле для других полей
+                const input = document.createElement('input');
+                input.type = 'text';
+                input.value = currentValue;
+                target.appendChild(input);
+
+                input.focus();
+                input.addEventListener('blur', () => {
+                    const newValue = input.value.trim();
+                    target.innerText = newValue;
+
+                    if (newValue !== originalData[key]) {
+                        editedData[key] = newValue;
+                        actionsDiv.classList.remove('hidden');
+                    } else {
+                        delete editedData[key];
+                        if (Object.keys(editedData).length === 0) {
+                            actionsDiv.classList.add('hidden');
+                        }
+                    }
+                });
+            }
+        }
+    });
+
+    // Обработка кнопок
+    document.getElementById('saveBtn').addEventListener('click', () => {
+        fetch(`/editCoffees/edit/${coffeeId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(editedData)
+        }).then(response => {
+            if (response.ok) {
+                alert('Данные успешно сохранены');
+                window.location.reload();
+            } else {
+                alert('Ошибка при сохранении данных');
+            }
+        });
+    });
+
+    document.getElementById('cancelBtn').addEventListener('click', () => {
+        Object.keys(editedData).forEach(key => {
+            document.querySelector(`[data-key="${key}"]`).innerText = originalData[key];
+        });
+        editedData = {};
+        actionsDiv.classList.add('hidden');
+    });
+</script>
+</html>
