@@ -322,4 +322,59 @@ router.put('/editCoffees/edit/:id', checkRole(['ADMIN']), async (req, res) => {
   }
 });
 
+
+
+router.get('/orderCoffees',checkRole(['ADMIN']), async (req, res) => {
+  try {   
+
+    const coffees = await Coffee.find(); 
+
+    if (coffees.length === 0) {
+      return res.render('catalog', { message: "Ничего не найдено", coffees: [] });
+    }
+
+    res.render('orderCoffees', { coffees,message:null  }); 
+  } catch (error) {
+    console.error('Error fetching coffees:', error);
+    res.status(500).send('Server error');
+  }
+})
+
+router.put('/orderCoffees/:id', checkRole(['ADMIN']), async (req, res) => {
+  const { id } = req.params;
+  const { quantity, newSupplyPrice, newSalePrice } = req.body;
+
+  try {
+      const coffee = await Coffee.findById(id);
+
+      if (!coffee) {
+          return res.status(404).json({ message: 'Кофе не найдено' });
+      }
+
+      const updateFields = {};
+
+      if (quantity && !isNaN(quantity)) {
+          updateFields.quantity = coffee.quantity + parseInt(quantity, 10);
+      }
+
+      if (newSupplyPrice && !isNaN(newSupplyPrice)) {
+          updateFields.supplyPrice = parseFloat(newSupplyPrice);
+      }
+      if (newSalePrice && !isNaN(newSalePrice)) {
+          updateFields.salePrice = parseFloat(newSalePrice);
+      }
+
+      if (Object.keys(updateFields).length === 0) {
+          return res.status(400).json({ message: 'Нет данных для обновления' });
+      }
+
+      await Coffee.findByIdAndUpdate(id, updateFields);
+
+      res.status(200).json({ message: 'Данные успешно обновлены' });
+  } catch (error) {
+      console.error('Ошибка при обновлении данных:', error);
+      res.status(500).json({ message: 'Ошибка при обновлении данных' });
+  }
+});
+
 module.exports = router;

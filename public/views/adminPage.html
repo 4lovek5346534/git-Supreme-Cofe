@@ -10,7 +10,7 @@
     <button id="add-coffee"> addCoffee </button>
     <button id="edit-coffees"> edit coffees </button><br>
     <br>
-    <button> orderCoffees </button><br>
+    <button id="supply"> orderCoffees </button><br>
     <br>
     <button> purchase history </button>
     <button>order history</button>
@@ -28,7 +28,9 @@ document.getElementById('add-coffee').addEventListener('click', () => {
     document.getElementById('edit-coffees').addEventListener('click', () => {
     window.location.href = '/editCoffees'; 
     });
-
+    document.getElementById('supply').addEventListener('click', () => {
+    window.location.href = '/orderCoffees'; 
+    });
 
 </script>
 </html>

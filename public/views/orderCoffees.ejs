@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>edit-coffees</title>
+</head>
+<style>
+    table, th, td {     
+        border: 2px solid;
+        border-collapse: collapse;
+        align-items: center;
+        height: 50px;
+    }
+    table {
+        margin-left: 0%;
+    }
+    td {
+        width: 100px;
+    }
+    img {
+        width: 100px;
+        height: 100px;
+    }
+    .table-btn {
+        width: 100px;
+        height: 100px;
+        background-color: rgb(244, 227, 207);
+    }
+    main {
+        left: 200px;
+    }
+    .modal {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: #fff;
+        border: 2px solid #000;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        padding: 20px;
+        z-index: 1000;
+        width: 400px;
+        border-radius: 10px;
+    }
+    .modal-header {
+        font-size: 24px;
+        font-weight: bold;
+        margin-bottom: 20px;
+        text-align: center;
+    }
+    .modal img {
+        display: block;
+        margin: 0 auto;
+        max-width: 150px;
+        max-height: 150px;
+    }
+    .modal input {
+        width: 100%;
+        margin: 10px 0;
+        padding: 5px;
+        box-sizing: border-box;
+    }
+    .modal-footer {
+        display: flex;
+        justify-content: space-between;
+    }
+    .modal-footer button {
+        width: 48%;
+        padding: 10px;
+        font-size: 16px;
+    }
+    .overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 999;
+        display: none;
+    }
+    .coffee-name {
+        text-align: center;
+        font-size: 18px;
+        font-weight: bold;
+        margin: 10px 0;
+    }
+</style>
+<body> 
+    <h4><a href="/adminPage">AdminPage</a></h4>
+    <main> 
+<!-- Таблица товаров -->
+<table>
+    <tr>
+        <th>img</th>
+        <th>Name</th>
+        <th>quantity</th>
+        <th>Sell-price</th>
+        <th>Supply-price</th>                 
+        <th>supply</th>
+    </tr>
+    <% coffees.forEach(coffee => { %>
+        <tr class="product" 
+            data-id="<%= coffee._id %>" 
+            data-name="<%= coffee.name %>" 
+            data-quantity="<%= coffee.quantity %>" 
+            data-saleprice="<%= coffee.salePrice %>" 
+            data-supplyprice="<%= coffee.supplyPrice %>" 
+            data-imgpath="/images/coffees_img/<%= coffee.imgPath.split('\\').pop() %>">
+            <td><img src="/images/coffees_img/<%= coffee.imgPath.split('\\').pop() %>" alt="<%= coffee.name %>"></td>
+            <td><%= coffee.name %></td>
+            <td><%= coffee.quantity %></td>
+            <td><%= coffee.salePrice %></td>
+            <td><%= coffee.supplyPrice %></td>
+            <td><button class="table-btn supply-btn" data-id="<%= coffee._id %>">supply</button></td>
+        </tr>
+    <% }) %>
+</table>
+
+<!-- Оверлей и модальное окно -->
+<div class="overlay"></div>
+<div class="modal" id="supply-modal">
+    <div class="modal-header">Supply</div>
+    <img id="coffee-img" src="" alt="Coffee">
+    <div class="coffee-name" id="coffee-name"></div>
+    <p>Current Quantity: <span id="current-quantity"></span></p>
+    <input type="number" id="supply-quantity" placeholder="Enter quantity to order">
+    <input type="number" id="new-supply-price" placeholder="Enter new supply price">
+    <input type="number" id="new-sale-price" placeholder="Enter new sale price">
+    <div class="modal-footer">
+        <button id="confirm-supply">Order</button>
+        <button id="cancel-supply">Cancel</button>
+    </div>
+</div>
+
+    <script>
+document.querySelectorAll('.supply-btn').forEach(button => {
+    button.addEventListener('click', event => {
+        const coffeeId = event.target.dataset.id;
+        const coffeeName = event.target.closest('tr').dataset.name;
+        const coffeeImgPath = event.target.closest('tr').dataset.imgpath;
+        const currentQuantity = event.target.closest('tr').dataset.quantity;
+
+        // Заполнение данных модального окна
+        document.getElementById('coffee-img').src = coffeeImgPath;
+        document.getElementById('coffee-img').alt = coffeeName;
+        document.getElementById('coffee-name').textContent = coffeeName;
+        document.getElementById('current-quantity').textContent = currentQuantity;
+
+        // Показ модального окна
+        document.querySelector('.overlay').style.display = 'block';
+        document.getElementById('supply-modal').style.display = 'block';
+
+        // Обработка нажатия на кнопку "Заказать"
+        document.getElementById('confirm-supply').addEventListener('click', () => {
+            const quantity = document.getElementById('supply-quantity').value.trim();
+            const newSupplyPrice = document.getElementById('new-supply-price').value.trim();
+            const newSalePrice = document.getElementById('new-sale-price').value.trim();
+
+            const editedData = {
+                quantity: quantity ? parseInt(quantity) : null,
+                newSupplyPrice: newSupplyPrice ? parseFloat(newSupplyPrice) : null,
+                newSalePrice: newSalePrice ? parseFloat(newSalePrice) : null
+            };
+
+            fetch(`/orderCoffees/${coffeeId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(editedData)
+            }).then(response => {
+                if (response.ok) {
+                    alert('Кофе успешно заказано');
+                    window.location.reload();
+                } else {
+                    alert('Ошибка при заказе кофе');
+                }
+            }).catch(err => {
+                console.error('Ошибка запроса:', err);
+                alert('Ошибка при сохранении данных');
+            });
+        });
+
+        // Обработка нажатия на кнопку "Отмена"
+        document.getElementById('cancel-supply').addEventListener('click', () => {
+            document.querySelector('.overlay').style.display = 'none';
+            document.getElementById('supply-modal').style.display = 'none';
+
+                // Очистка полей формы
+    document.getElementById('supply-quantity').value = '';
+    document.getElementById('new-supply-price').value = '';
+    document.getElementById('new-sale-price').value = '';
+
+        });
+    });
+});
+
+    </script>
+</body>
+</html>
