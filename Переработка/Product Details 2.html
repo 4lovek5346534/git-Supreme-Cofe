@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Ecommerce Product Details 2</title>
+    <link rel="stylesheet" href="style-product-2.css">
+    <!--=== import-poppins-font ===-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <!--=== using-font-awesome-for-icons ===-->
+    <script src="https://kit.fontawesome.com/6bd6c771de.js" crossorigin="anonymous"></script>
+</head>
+
+<body>
+
+ 	<div class="product-page-container">
+
+        <!--=== Route ===-->
+        <span class="link-route">
+        <a href="#">Home</a> > <a href="#">Coffee</a> 
+        </span>
+
+        <!--=== Product-details-section ===-->
+        <section id="product-page">
+
+            <!--=== img ===-->
+            <div class="product-page-img">
+                <img src="product1.jpg"/>
+                <!-- <iframe title="Coffee cup" frameborder="0" allowfullscreen mozallowfullscreen="true" webkitallowfullscreen="true" allow="autoplay; fullscreen; xr-spatial-tracking" xr-spatial-tracking execution-while-out-of-viewport execution-while-not-rendered web-share src="https://sketchfab.com/models/3f6f89080498447ea3dc156b2f363aea/embed?autospin=1&autostart=1&camera=0"> </iframe> -->
+                <!-- <iframe title="Coffee pack" frameborder="0" allowfullscreen mozallowfullscreen="true" webkitallowfullscreen="true" allow="autoplay; fullscreen; xr-spatial-tracking" xr-spatial-tracking execution-while-out-of-viewport execution-while-not-rendered web-share src="https://sketchfab.com/models/b9baf8af8b9e4ff993666e1cbe4c8c25/embed?autospin=1&autostart=1&camera=0"> </iframe> -->
+
+            </div>
+            <!--=== details ===-->
+            <div class="product-page-details">
+                <!--=== title ===-->
+                <strong>New Luxury Coffee</strong>
+                <span class="product-category">
+                    Luxury - Coffee
+                </span>
+                <!--=== price ===-->
+                <span class="price">$70</span>
+                 <!--=== details ===-->
+                 <p class="small-desc">Test1 test1 test1 test1 test1 test1 test1 test1 test1 test1 test1 test1 test1 test1 test1 test1 test1 test1 test1 test1 test1 test1 test1 test1 test1</p>
+                 
+                 
+                  <!--=== Cart-btns DELETE!!! ===-->
+                  <div class="cart-btns">
+                    <a href="#" class="add-cart">Add to Cart</a>
+                    <a href="#" class="add-cart buy-now">Buy Now</a>
+                  </div>
+                  
+            </div>
+        </section>
+
+        <!--=== Product-all-info ===-->        
+        <section class="product-all-info">
+            <!--=== menu ===-->
+            <ul class="product-info-menu">
+                <li class="p-info-list active" data-filter="сharacteristics">Characteristics</li>
+                <li class="p-info-list" data-filter="materials">Materials</li>
+                <li class="p-info-list" data-filter="howuse">How to Use</li>
+                <li class="p-info-list" data-filter="protips">Pro Tips</li>
+            </ul>
+            <!--=== info-container ===-->
+            <div class="info-container сharacteristics active">
+                <p>test1 test1 test1</p>
+            </div>
+            <!--=== info-container ===-->
+            <div class="info-container materials">
+                <p>test2 test2 test2</p>
+            </div>
+            <!--=== info-container ===-->
+            <div class="info-container howuse">
+                <p>test3 test3 test3</p>
+            </div>
+            <!--=== info-container ===-->
+            <div class="info-container protips">
+                <p>test4 test4 test4</p>
+            </div>
+        </section>
+            
+    </div>
+
+    <!--=== Jquery ===-->
+    <script type="text/javascript" src="js/jquery-3.7.1.js"></script>
+
+    <!--=== Script ===-->
+    <script type="text/javascript">
+        //only one color select
+        $(document).ready(function(){
+            $('input:checkbox').click(function(){
+                $('input:checkbox').not(this).prop('checked', false);
+            });
+        });
+
+        //product info menu
+        $(document).on('click', '.product-info-menu li', function(){
+            $(this).addClass('active').siblings().removeClass('active')
+        });
+
+        //product-info-filter
+        $(document).ready(function(){
+            $('.p-info-list').click(function(){
+                const value = $(this).attr('data-filter');
+                if(value == 'all'){
+                    $('.info-container').filter('.'+value).show('1000');
+                }
+                else{
+                    $('.info-container').not('.'+value).hide('1000');
+                    $('.info-container').filter('.'+value).show('1000');
+                }
+            });
+        });
+    </script>
+
+	<!-- <script src="srcipt-product.js"></script> -->
+
+</body>
+</html>
