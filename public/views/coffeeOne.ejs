@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -43,4 +43,352 @@
         });
     </script>
 </body>
+</html> -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title><%= coffee.name %></title>
+    <link rel="stylesheet" href="/css/style-product-2.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/6bd6c771de.js" crossorigin="anonymous"></script>
+</head>
+<style>
+    #questionForm {
+      display: none;
+      margin-top: 20px;
+      background-color: #fcfcfc;
+      padding: 20px;
+      border: 1px solid #f1f1f1;
+      border-radius: 5px;
+    }
+    
+    #questionForm input[type="text"], #questionForm textarea {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
+  
+    #questionForm div {
+      text-align: right;
+    }
+  
+    #questionForm button {
+      padding: 8px 15px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+  
+    #submitQuestionButton {
+      background-color: #333;
+      color: white;
+    }
+  
+    #cancelQuestionButton {
+      background-color: #ddd;
+      color: #333;
+    }
+
+    .question-block {
+  margin-bottom: 20px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  padding: 15px;
+  border-radius: 5px;
+}
+
+/* Стили для блока с аватаром пользователя */
+.question-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.question-header img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.question-header strong {
+  color: #333;
+}
+
+/* Стили для блока ответа */
+.answer-block {
+  margin-top: 10px;
+  border-top: 1px solid #eee;
+  padding-top: 10px;
+}
+
+/* Стили для блока с аватаром администратора */
+.answer-header {
+  display: flex;
+  align-items: center;
+}
+
+.answer-header img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.answer-header strong {
+  color: #cf1e68;
+}
+
+/* Стили для текста */
+.answer-text {
+  color: #535353;
+}
+
+.no-answer {
+  color: #888;
+  font-style: italic;
+}
+  </style>
+  
+<body>
+
+ 	<div class="product-page-container">
+
+        <!--=== Route ===-->
+        <span class="link-route">
+            <a href="/">Home</a> > <a href="/catalog">Catalog</a> > <a href="#"><%= coffee.name %></a>
+        </span>
+
+        <!--=== Product-details-section ===-->
+        <section id="product-page">
+
+            <!--=== img ===-->
+            <div class="product-page-img">
+                <img src="/images/coffees_img/<%= coffee.imgPath.split('\\').pop() %>">
+            </div>
+
+            <!--=== details ===-->
+            <div class="product-page-details">
+                <!--=== title ===-->
+                <strong><%= coffee.name %></strong>
+                <span class="product-category">
+                    <%= coffee.type === 'bean' ? 'Зерно' : 'Молотая' %> - <%= coffee.origin %>
+                </span>
+
+                <!--=== price ===-->
+                <span class="price" style="color: red;"><%= coffee.salePrice %> грн</span>
+
+                <!--=== details ===-->
+                <p class="small-desc">Информация о продукте:</p>
+                <p>Вес: <%= coffee.netWeight %> г</p>
+                <p>Состав: <%= coffee.composition === 'arabica' ? 'Арабика' : 'Робуста' %></p>
+                <br>
+<br>
+                <!--=== Add-to-cart ===-->
+
+                  <!--=== Cart-btns DELETE!!! ===-->
+                  <div class="cart-btns">
+                    <a href="#" id="addToCartButton" class="add-cart">Добавить в карзину</a>
+                    <a href="#" class="add-cart buy-now">Купить</a>
+                  </div>
+            </div>
+        </section>
+
+        <!--=== Product-all-info ===-->        
+        <section class="product-all-info">
+            <!--=== menu ===-->
+            <ul class="product-info-menu">
+                <li class="p-info-list active" data-filter="сharacteristics">О таваре</li>
+                <li class="p-info-list" data-filter="materials">Характеристики</li>
+                <li class="p-info-list" data-filter="howuse">Коментарии</li>
+                <li class="p-info-list" data-filter="protips">Вопросы</li>
+            </ul>
+            <!--=== info-container ===-->
+            <div class="info-container сharacteristics active">
+                <p> <%= coffee.info %></p>
+            </p>
+            </div>
+            <div class="info-container materials">
+                <p><strong>Название:</strong> <%= coffee.name %></p>
+                <p><strong>Цена:</strong> <%= coffee.salePrice %> грн</p>
+                <p><strong>Количество:</strong> <%= coffee.quantity %> шт</p>
+                <p><strong>Вес:</strong> <%= coffee.netWeight %> грамм</p>
+                <p><strong>Тип:</strong> <%= coffee.type === 'bean' ? 'Зерно' : 'Молотый' %></p>
+                <p><strong>Страна происхождения:</strong> <%= coffee.origin %></p>
+                <p><strong>Состав:</strong> <%= coffee.composition === 'arabica' ? 'Арабика' : 'Робуста' %></p>
+                            </div>
+            <div class="info-container howuse">
+                <p>Коментарии...</p>
+            </div>
+            <div class="info-container protips">
+                <div class="questions-section">
+                    <h2 style="margin-bottom: 20px; font-size: 1.5rem; color: #333;">Вопросы</h2>
+                
+                    <!-- Кнопка "Задать вопрос" -->
+                    <button id="askQuestionButton" style="background-color: #cf1e68; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">Задать вопрос</button>
+                
+                    <!-- Форма для ввода вопроса -->
+                    <div id="questionForm" style="display: none; margin-top: 20px; background-color: #fcfcfc; padding: 20px; border: 1px solid #f1f1f1; border-radius: 5px;">
+                        <!-- Скрытые поля -->
+                        <input type="hidden" id="coffeeId" value="12345"> <!-- ID кофе -->
+                        <input type="hidden" id="coffeeName" value="espresso"> <!-- Название кофе -->
+                      
+                        <!-- Поле ввода вопроса -->
+                        <label for="questionInput" style="font-size: 1rem; color: #333;">Введите ваш вопрос:</label>
+                        <input type="text" id="questionInput" placeholder="Введите ваш вопрос" style="width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ddd; border-radius: 5px;">
+                      
+                        <!-- Кнопки -->
+                        <div style="text-align: right;">
+                          <button id="submitQuestionButton" style="background-color: #333; color: white; padding: 8px 15px; border: none; border-radius: 5px; cursor: pointer;">Отправить</button>
+                          <button id="cancelQuestionButton" style="background-color: #ddd; color: #333; padding: 8px 15px; border: none; border-radius: 5px; cursor: pointer;">Отмена</button>
+                        </div>
+                      </div>
+                      <br> <br>
+                      <hr>
+                      <% if (questions.length === 0) { %>
+                        <p>Оставьте свой вопрос, и администрация ответит на него в ближайшее время.</p>
+                      <% } else { %>
+                        <% questions.forEach(question => { %>
+                          <% question.items.forEach(item => { %>
+                            <div class="question-header">
+                              <!-- Аватар и имя пользователя -->
+                              <% if (item.userAvatar) { %>
+                                <img src="<%= item.userAvatar.replace('public/', '/') %>" alt="Аватар пользователя"> 
+                              <% } else { %>
+                                <img src="/images/user_img/user_img_default.jpg" alt="Аватар пользователя">
+                              <% } %>
+                              <div>
+                                <strong><%= item.userName || 'Неизвестный пользователь' %></strong>
+                                <p class="question-text"><%= item.Question %></p>
+                              </div>
+                            </div>
+                      
+                            <div class="answer-header">
+                              <!-- Аватар и имя администратора -->
+                              <% if (item.AdminId && item.adminAvatar) { %>
+                                <img src="<%= item.adminAvatar.replace('public/', '/') %>" alt="Аватар администратора">
+                                <div>
+                                  <strong><%= item.AdminId ? item.adminName || 'Администратор' : 'Ожидайте ответа от администрации' %></strong>
+                                  <p class="answer-text">
+                                    <%= item.answer === "Answer wasn't sent" ? 'Ожидайте ответа от администрации' : item.answer %>
+                                  </p>
+                                </div>
+                              <% } else { %>
+                                <strong>Ожидайте ответа от администрации</strong>
+
+                              <% } %>
+                            
+                            </div> <hr>
+                          <% }); %>
+                         
+                        <% }); %>
+                      <% } %>
+                      
+                      
+                      
+                      
+                      
+                
+            </div>
+        </section>
+    </div>
+
+
+</body>
+ <script type="text/javascript" src="/js/jquery-3.7.1.js"></script>
+    <script>
+        document.getElementById('addToCartButton').addEventListener('click', () => {
+            fetch('/cart/add', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ coffeeId: '<%= coffee._id %>' })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Товар добавлен в корзину');
+                } else {
+                    alert('Ошибка при добавлении в корзину');
+                }
+            })
+            .catch(error => {
+                console.error('Ошибка:', error);
+            });
+        });
+
+        $(document).on('click', '.product-info-menu li', function(){
+            $(this).addClass('active').siblings().removeClass('active');
+        });
+
+        $('.p-info-list').click(function(){
+            const value = $(this).attr('data-filter');
+            if(value === 'all'){
+                $('.info-container').show('1000');
+            } else {
+                $('.info-container').not('.' + value).hide('1000');
+                $('.info-container.' + value).show('1000');
+            }
+        });
+
+        document.getElementById('askQuestionButton').addEventListener('click', () => {
+  // Показать форму
+  document.getElementById('questionForm').style.display = 'block';
+});
+
+document.getElementById('cancelQuestionButton').addEventListener('click', () => {
+  // Скрыть форму и очистить поле ввода
+  document.getElementById('questionForm').style.display = 'none';
+  document.getElementById('questionInput').value = '';
+});
+
+document.getElementById('submitQuestionButton').addEventListener('click', async () => {
+  const questionInput = document.getElementById('questionInput').value.trim();
+
+  if (!questionInput) {
+    alert('Введите вопрос!');
+    return;
+  }
+
+  // Извлекаем coffeeName и coffeeId из URL
+  const pathParts = window.location.pathname.split('/');
+  const coffeeName = pathParts[pathParts.length - 2]; // Имя кофе
+  const coffeeId = pathParts[pathParts.length - 1]; // ID кофе
+
+  try {
+    const response = await fetch(`/catalog/${coffeeName}/${coffeeId}/ask`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        Question: questionInput,
+      })
+    });
+
+    if (response.ok) {
+      alert('Вопрос отправлен!');
+      document.getElementById('questionForm').style.display = 'none';
+      document.getElementById('questionInput').value = '';
+      location.reload(); // Перезагрузка страницы для обновления вопросов
+    } else if (response.status === 401) {
+      // Пользователь не авторизован
+      alert('Вы не авторизованы! Пожалуйста, войдите в свой аккаунт, чтобы задать вопрос.');
+    } else {
+      // Прочие ошибки
+      const error = await response.json();
+      alert(`Ошибка: ${error.message}`);
+    }
+  } catch (err) {
+    console.error(err);
+    alert('Ошибка при отправке вопроса');
+  }
+});
+
+
+</script>
 </html>

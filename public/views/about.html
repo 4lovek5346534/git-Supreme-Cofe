@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SupremeCoffee</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Poppins, sans-serif;
+        }
+
+        body {
+            background-color: #f9f9f9;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+            text-align: center;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #992153;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        p {
+            color: #555;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 30px;
+            max-width: 800px;
+        }
+
+        .highlight {
+            font-weight: bold;
+            color: #cf1e68;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .cta-button {
+            background-color: #992153;
+            color: white;
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
+
+        .cta-button:hover {
+            background-color: #cf1e68;
+        }
+
+        /* Add responsive design */
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            p {
+                font-size: 1rem;
+            }
+
+            .cta-button {
+                font-size: 1rem;
+                padding: 12px 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Добро пожаловать в SupremeCoffee!</h1>
+    <p>Мы на рынке уже <span class="highlight">10 лет</span> и гордимся тем, что предоставляем нашим клиентам кофе на любой вкус. От ароматного кофе, который идеально подойдёт для утренней чашки, до эксклюзивных сортов, таких как элитный кофе из самых уникальных источников.</p>
+    <p>В нашем магазине работают квалифицированные администраторы, которые оперативно обрабатывают заказы и всегда готовы ответить на ваши вопросы с максимальной вежливостью и вниманием к каждому клиенту. Мы ценим ваш выбор и всегда стремимся сделать покупки у нас как можно более удобными и приятными.</p>
+    <p>Присоединяйтесь к нашей дружной кофейной семье! Погрузитесь в мир ароматного кофе с <span class="highlight">SupremeCoffee</span> и откройте для себя новые горизонты вкуса и удовольствия!</p>
+    <div class="buttons">
+        <a href="/login" class="cta-button">Войти в акаунт</a>
+        <a href="/catalog" class="cta-button">Перейти в каталог</a>
+    </div>
+</body>
+</html>

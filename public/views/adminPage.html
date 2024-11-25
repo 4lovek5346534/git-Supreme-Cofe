@@ -15,8 +15,9 @@
     <button> purchase history </button>
     <button>order history</button>
     <br><br>
-    <button> stack of orders</button>
-    <button> answer to questions </button>
+    <button> stack of orders</button><br><br>
+    <button id="answer-to-questions"> answer to questions </button>
+    <button id="questions"> questions </button>
     <br>
 
 
@@ -31,6 +32,11 @@ document.getElementById('add-coffee').addEventListener('click', () => {
     document.getElementById('supply').addEventListener('click', () => {
     window.location.href = '/orderCoffees'; 
     });
-
+    document.getElementById('answer-to-questions').addEventListener('click', () => {
+    window.location.href = '/AnswerToQuestions'; 
+    }); 
+     document.getElementById('questions').addEventListener('click', () => {
+    window.location.href = '/questions'; 
+    });
 </script>
 </html>

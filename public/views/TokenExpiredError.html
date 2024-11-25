@@ -4,8 +4,84 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Token Expired</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Poppins, sans-serif;
+        }
+
+        body {
+            background-color: #f9f9f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+            text-align: center;
+        }
+
+        h1 {
+            color: #333333;
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        .message {
+            color: #555555;
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+        }
+
+        .buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        button {
+            background-color: #992153;
+            color: white;
+            padding: 10px 20px;
+            font-size: 1rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        button a {
+            color: white;
+            text-decoration: none;
+        }
+
+        button:hover {
+            background-color: #cf1e68;
+        }
+
+        /* Add responsive design */
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 1.5rem;
+            }
+
+            button {
+                font-size: 0.9rem;
+                padding: 8px 16px;
+            }
+        }
+    </style>
 </head>
-<body><h1>Token Expired Error: jwt expired </h1>
-    <button><a href="/login">Login</a></button>
+<body>
+    <h1>Token Expired Error: jwt expired</h1>
+    <div class="message">
+        <p>We apologize for the inconvenience. Your session has expired. Please log in again to continue.</p>
+    </div>
+    <div class="buttons">
+        <button><a href="/login">Login</a></button>
+        <button><a href="/catalog">Go to Catalog</a></button>
+    </div>
 </body>
 </html>

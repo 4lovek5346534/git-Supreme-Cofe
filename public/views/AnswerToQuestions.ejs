@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ответы на вопросы</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 20px;
+    }
+
+    .question-block {
+      background-color: #fff;
+      border: 1px solid #ccc;
+      margin-bottom: 20px;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .question-item {
+      margin-bottom: 20px;
+    }
+
+    .question-item p {
+      font-size: 16px;
+      line-height: 1.5;
+    }
+
+    .question-item strong {
+      color: #333;
+    }
+
+    .answer-form {
+      display: none;
+      margin-top: 10px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      background-color: #f9f9f9;
+    }
+
+    .answer-form textarea {
+      width: 100%;
+      padding: 8px;
+      font-size: 14px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      resize: vertical;
+    }
+
+    .answer-form button {
+      margin-top: 10px;
+      padding: 8px 16px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .answer-form button:hover {
+      background-color: #45a049;
+    }
+
+    .empty-answer {
+      border-color: red;
+      background-color: #f8d7da;
+    }
+
+    .answered {
+      border-color: green;
+      background-color: #d4edda;
+    }
+
+    .answer-message {
+      font-weight: bold;
+      margin-top: 10px;
+    }
+
+    .image {
+      max-width: 200px;
+      margin-bottom: 10px;
+    }
+
+    h1 {
+      color: #333;
+    }
+
+    h4 {
+      margin-bottom: 20px;
+      font-size: 18px;
+    }
+  </style>
+</head>
+<body>
+  
+  <h4><a href="/adminPage">AdminPage</a></h4>
+
+  <h1>Вопросы пользователей</h1>
+
+  <% if (questions.length === 0) { %>
+    <p>Нет вопросов для ответа.</p>
+  <% } else { %>
+    <% questions.forEach(question => { %>
+      <div class="question-block">
+        <h2>Кофе: <%= question.CoffeeId.name %></h2>
+        <img src="/images/coffees_img/<%= question.CoffeeId.imgPath.split('\\').pop() %>" alt="Картинка кофе" class="image">
+        <% question.items.forEach(item => { %>
+          <div class="question-item">
+            <p><strong>Вопрос:</strong> <%= item.Question %></p>
+            <p><strong>Ответ:</strong> 
+              <span class="<%= item.answer && item.answer !== 'Answer wasn\'t sent' ? 'answered' : 'empty-answer' %>">
+                <%= item.answer && item.answer !== 'Answer wasn\'t sent' ? item.answer : 'Ответ еще не предоставлен' %>
+              </span>
+            </p>
+            
+            <button onclick="showAnswerForm('<%= item._id %>')">Ответить</button>
+
+            <div class="answer-form" id="form-<%= item._id %>">
+              <textarea id="answer-<%= item._id %>" rows="3" cols="50" placeholder="Введите ваш ответ" class="<%= item.answer ? 'answered' : 'empty-answer' %>"></textarea>
+              <br>
+              <button onclick="sendAnswer('<%= item._id %>')">Отправить</button>
+              <button onclick="hideAnswerForm('<%= item._id %>')">Отмена</button>
+            </div>
+          </div>
+        <% }) %>
+      </div>
+    <% }) %>
+  <% } %>
+
+  <script>
+    function showAnswerForm(questionId) {
+      document.getElementById(`form-${questionId}`).style.display = 'block';
+    }
+
+    function hideAnswerForm(questionId) {
+      document.getElementById(`form-${questionId}`).style.display = 'none';
+    }
+
+    async function sendAnswer(questionId) {
+      const answerInput = document.getElementById(`answer-${questionId}`);
+      const answer = answerInput.value.trim();
+
+      // Reset error state
+      answerInput.classList.remove('empty-answer');
+
+      if (!answer) {
+        alert('Ответ не может быть пустым!');
+        answerInput.classList.add('empty-answer');
+        return;
+      }
+
+      try {
+        const response = await fetch('/admin/questions/answer', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            questionId,
+            answer,
+          }),
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          alert(data.message);
+          answerInput.classList.add('answered');
+          location.reload();
+        } else {
+          alert(`Ошибка: ${data.message}`);
+          answerInput.classList.add('empty-answer');
+        }
+      } catch (error) {
+        console.error('Ошибка при отправке ответа:', error);
+        alert('Ошибка сервера.');
+        answerInput.classList.add('empty-answer');
+      }
+    }
+  </script>
+</body>
+</html>

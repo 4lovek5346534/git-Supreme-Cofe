@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Вопросы без ответа</title>
+  <style>
+    .question-block {
+      border: 1px solid #ccc;
+      margin-bottom: 20px;
+      padding: 10px;
+    }
+    .question-item {
+      margin-bottom: 10px;
+    }
+    .no-answer {
+      background-color: #f8d7da;
+      border: 1px solid red;
+      padding: 10px;
+    }
+  </style>
+</head>
+<body>  <h4><a href="/adminPage">AdminPage</a></h4>
+
+  <h1>Вопросы без ответа</h1>
+  
+  <% if (questions.length === 0) { %>
+    <p>Нет вопросов без ответа.</p>
+  <% } else { %>
+    <% questions.forEach(question => { %>
+      <div class="question-block">
+        <h2>Кофе: <%= question.CoffeeId.name %></h2>
+        <img src="/images/coffees_img/<%= question.CoffeeId.imgPath.split('\\').pop() %>" alt="Картинка кофе" style="max-width: 200px; margin-bottom: 10px;">
+        
+        <% question.items.forEach(item => { %>
+          <% if (item.answer === 'Answer wasn\'t sent') { %>
+            <div class="question-item no-answer">
+              <p><strong>Вопрос:</strong> <%= item.Question %></p>
+              <p><strong>Ответ:</strong> Ответ еще не предоставлен</p>
+              <button onclick="showAnswerForm('<%= item._id %>')">Ответить</button>
+              <div class="answer-form" id="form-<%= item._id %>">
+                <textarea id="answer-<%= item._id %>" rows="3" cols="50" placeholder="Введите ваш ответ"></textarea>
+                <br>
+                <button onclick="sendAnswer('<%= item._id %>')">Отправить</button>
+                <button onclick="hideAnswerForm('<%= item._id %>')">Отмена</button>
+              </div>
+            </div>
+          <% } %>
+        <% }) %>
+      </div>
+    <% }) %>
+  <% } %>
+
+  <script>
+    function showAnswerForm(questionId) {
+      document.getElementById(`form-${questionId}`).style.display = 'block';
+    }
+
+    function hideAnswerForm(questionId) {
+      document.getElementById(`form-${questionId}`).style.display = 'none';
+    }
+
+    async function sendAnswer(questionId) {
+      const answer = document.getElementById(`answer-${questionId}`).value.trim();
+      if (!answer) {
+        alert('Ответ не может быть пустым!');
+        return;
+      }
+
+      try {
+        const response = await fetch('/api/coffees/admin/questions/answer', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ questionId, answer }),
+        });
+
+        const data = await response.json();
+        if (response.ok) {
+          alert(data.message);
+          location.reload();
+        } else {
+          alert(`Ошибка: ${data.message}`);
+        }
+      } catch (error) {
+        console.error('Ошибка при отправке ответа:', error);
+        alert('Ошибка сервера.');
+      }
+    }
+  </script>
+</body>
+</html>

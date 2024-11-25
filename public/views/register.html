@@ -4,13 +4,82 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&display=swap" rel="stylesheet">
-       <title>Node Coffee API</title>
+    <title>Node Coffee API</title>
+    <style>
+        /* Resetting default styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Instrument Serif', serif;
+            background-color: #f4f4f4;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 100vh;
+            padding: 20px;
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 40px;
+            color: #992153;
+            text-align: center;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        button {
+            background-color: #992153;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 1.1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #cf1e68;
+        }
+
+        button:focus {
+            outline: none;
+        }
+
+        /* Media query for responsiveness */
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            button {
+                font-size: 1rem;
+                padding: 10px 20px;
+            }
+        }
+    </style>
 </head>
 <body>
     <h1><a href="/catalog">SupremeCoffee</a></h1>
-    <button><a href="/signup">Signup</a></button> 
-    <button><a href="/login">Login</a></button>
+    <div class="button-container">
+        <button><a href="/signup">Signup</a></button>
+        <button><a href="/login">Login</a></button>
     </div>
 </body>
 </html>
-

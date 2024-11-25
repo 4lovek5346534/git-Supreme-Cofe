@@ -45,10 +45,21 @@ class UserController {
 
             const hashPassword = await bcrypt.hash(password, 10);
             const userRole = await Role.findOne({ value: "USER" });
-            const newUser = new User({ name, email, password: hashPassword, roles: [userRole.value] });
+
+            // Путь к изображению по умолчанию
+            const defaultImgPath = '/public/images/user_img/user_img_default.jpg';
+
+            const newUser = new User({
+                name,
+                email,
+                password: hashPassword,
+                roles: [userRole.value],
+                imgPath: defaultImgPath // Устанавливаем путь к изображению по умолчанию
+            });
+
             const savedUser = await newUser.save();
 
-              const newCart = new Cart({
+            const newCart = new Cart({
                 userId: savedUser._id,
                 items: [] 
             });
