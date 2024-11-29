@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Test2</title>
+    <link rel="stylesheet" href="style-test01.css">
+    <link rel="stylesheet" href="style-test2.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
+</head>
+
+<body>
+    <!-- Navbar -->
+     <header>
+        <!-- Nav -->    
+         <div class="nav container">
+            <div class="div-logo">
+                <!-- Logo -->
+             <a href="#" class="logo">Supreme-Coffee</a>
+            </div>
+
+            <div class="div-search">
+                <form action="https://www.google.com/search" class="search" id="search-bar">
+                    <input type="search" placeholder="search anything" class="search__input" name="q" method="get">
+        
+                    <div class="search__button" id="search-button">
+                        <i class="ri-search-2-line search__icon"></i>
+                        <i class="ri-close-line search__close"></i>
+                    </div>
+                </form>
+            </div>
+
+            <div class="div-icons">
+                <!-- Cart Icon --> 
+            <i class="bx bx-shopping-bag" id="cart-icon" data-quantity="0"></i>
+            <!-- User Icon --> 
+            <i class="bx bx-user" id="user-icon"></i>
+            </div>
+            
+			<!-- cart -->
+			 <div class="cart">
+				<h2 class="cart-title">Your Cart</h2>
+				<!-- Content -->
+				 <div class="cart-content"></div>
+				 <!-- Total -->
+				  <div class="total">
+					<div class="total-title">Total</div>
+					<div class="total-price">$0</div>
+				  </div>
+				   <!-- Buy Button -->
+					<button type="button" class="btn-buy">Pay Now</button>
+					<!-- Close Cart -->
+					 <i class='bx bx-x' id="close-cart"></i>
+			 </div>
+         </div>
+     </header>
+	 <!-- Products --> 
+	  <section class="shop container">
+		<h2 class="section-title">Shop Products</h2>
+		<!-- Shop Content --> 
+		 <div class="shop-content">
+			<!-- Box 1 --> 
+			 <div class="product-box">
+				<!-- Stripe need images that are on online on local server it will not show in stripe checkout page we to upload online -->
+				<img src="product1.jpg"
+				alt=""
+				class="product-img"
+				/>
+				<h2 class="product-title">Кофе в зернах Lavazza Qualita Oro 500 г</h2>
+				<span class="price">$916</span>
+				<i class="bx bx-shopping-bag add-cart"></i>
+			 </div>
+			<!-- Box 2 --> 
+			 <div class="product-box">
+				<img src="product2.jpg"
+				alt=""
+				class="product-img"
+				/>
+				<h2 class="product-title">Кофе в зернах Ambassador Premium 1 кг</h2>
+				<span class="price">$996</span>
+				<i class="bx bx-shopping-bag add-cart"></i>
+			 </div>
+			<!-- Box 3 --> 
+			 <div class="product-box">
+				<img src="product3.jpg"
+				alt=""
+				class="product-img"
+				/>
+				<h2 class="product-title">Кофе в зернах Jacobs Monarch 1 кг</h2>
+				<span class="price">$850</span>
+				<i class="bx bx-shopping-bag add-cart"></i>
+			 </div>
+			<!-- Box 4 --> 
+			 <div class="product-box">
+				<img src="product4.jpg"
+				alt=""
+				class="product-img"
+				/>
+				<h2 class="product-title">Кофе растворимый NESCAFE Gold 400 г</h2>
+				<span class="price">$679</span>
+				<i class="bx bx-shopping-bag add-cart"></i>
+			 </div>
+			<!-- Box 5 --> 
+			 <div class="product-box">
+				<img src="product5.jpg"
+				alt=""
+				class="product-img"
+				/>
+				<h2 class="product-title">Кофе Starbucks Blonde Эспрессо Роуст натуральный жареный в зернах 200 г</h2>
+				<span class="price">$916</span>
+				<i class="bx bx-shopping-bag add-cart"></i>
+			 </div>
+			<!-- Box 6 --> 
+			 <div class="product-box">
+				<img src="product6.jpg"
+				alt=""
+				class="product-img"
+				/>
+				<h2 class="product-title">Кофе молотый VDOMA Fruitful Delight Арабика натуральный жареный 250 г</h2>
+				<span class="price">$224</span>
+				<i class="bx bx-shopping-bag add-cart"></i>
+			 </div>
+			<!-- Box 7 --> 
+			 <div class="product-box">
+				<img src="product7.jpg"
+				alt=""
+				class="product-img"
+				/>
+				<h2 class="product-title">Кофе растворимый Jacobs Monarch 500 г</h2>
+				<span class="price">$973</span>
+				<i class="bx bx-shopping-bag add-cart"></i>
+			 </div>
+			<!-- Box 8 --> 
+			 <div class="product-box">
+				<img src="product8.jpg"
+				alt=""
+				class="product-img"
+				/>
+				<h2 class="product-title">Кофе в зернах VDOMA Cloud Nine Brew натуральный жареный 250 г</h2>
+				<span class="price">$394</span>
+				<i class="bx bx-shopping-bag add-cart"></i>
+			 </div>
+		 </div>
+	  </section>
+
+      <div class="main_box">
+        <input type="checkbox" id="check">
+        <div class="btn_one">
+            <label for="check">
+                <i class="ri-bar-chart-horizontal-fill"></i>
+            </label>
+        </div>
+        <div class="sidebar_menu">
+            <div class="logo">
+                <a href="#">Фільтрація</a>
+            </div>
+            <div class="btn_two">
+                <label for="check">
+                    <i class="ri-close-fill"></i>
+                </label>
+            </div>
+            <div class="filter-block">
+              <div class="filter-item">
+                <h3 class="filter-title">Ціна</h3>
+                <div class="wrapper">
+                  <header>
+                      <h2>Оберіть діапозон</h2>
+                  </header>
+                  <div class="price-input">
+                      <div class="field">
+                          <span>Min</span>
+                          <input type="number" class="input-min" value="2500">
+                      </div>
+                      <div class="separator">-</div>
+                      <div class="field">
+                          <span>Max</span>
+                          <input type="number" class="input-max" value="7500">
+                      </div>
+                  </div>
+                  <div class="slider">
+                      <div class="progress"></div>
+                  </div>
+                  <div class="range-input">
+                      <input type="range" class="range-min" min="0" max="10000" value="2500" step="100">
+                      <input type="range" class="range-max" min="0" max="10000" value="7500" step="100">
+                  </div>
+              </div>
+
+              </div>
+
+              <div class="filter-item">
+                <h3 class="filter-title">Країна</h3>
+                <ul class="filter-list">
+                  <li><input type="checkbox" id="rozetka"><label for="rozetka">Азия</label></li>
+                  <li><input type="checkbox" id="other"><label for="other">Африка</label></li>
+                  <li><input type="checkbox" id="citrus"><label for="citrus">Бразилия</label></li>
+                  <li><input type="checkbox" id="eldorado"><label for="eldorado">Бурунди</label></li>
+                  <li><input type="checkbox" id="allo"><label for="allo">Вьетнам</label></li>
+                  <li><input type="checkbox" id="comfy"><label for="comfy">Гавайи</label></li>
+                  <li><input type="checkbox" id="moyo"><label for="moyo">Гватемала</label></li>
+                  <li><input type="checkbox" id="foxtrot"><label for="foxtrot">Гондурас</label></li>
+                  <li><input type="checkbox" id="allo2"><label for="allo2">Индия</label></li>
+                  <li><input type="checkbox" id="rozetka2"><label for="rozetka2">Индонезия</label></li>
+                  <li><input type="checkbox" id="rozetka2"><label for="rozetka2">Кения</label></li>
+                  <li><input type="checkbox" id="rozetka2"><label for="rozetka2">Колумбия</label></li>
+                  <li><input type="checkbox" id="rozetka2"><label for="rozetka2">Конго</label></li>
+                  <li><input type="checkbox" id="rozetka2"><label for="rozetka2">Коста Рика</label></li>
+                  <li><input type="checkbox" id="rozetka2"><label for="rozetka2">Латинская Америка</label></li>
+                  <li><input type="checkbox" id="rozetka2"><label for="rozetka2">Мексика</label></li>
+                  <li><input type="checkbox" id="rozetka2"><label for="rozetka2">Непал</label></li>
+                  <li><input type="checkbox" id="rozetka2"><label for="rozetka2">Нет информации</label></li>
+                  <li><input type="checkbox" id="rozetka2"><label for="rozetka2">Никарагуа</label></li>
+                  <li><input type="checkbox" id="rozetka2"><label for="rozetka2">Панама</label></li>
+                  <li><input type="checkbox" id="rozetka2"><label for="rozetka2">Перу</label></li>
+                  <li><input type="checkbox" id="rozetka2"><label for="rozetka2">Руанда</label></li>
+                  <li><input type="checkbox" id="rozetka2"><label for="rozetka2">Сальвадор</label></li>
+                  <li><input type="checkbox" id="rozetka2"><label for="rozetka2">Танзания</label></li>
+                  <li><input type="checkbox" id="rozetka2"><label for="rozetka2">Уганда</label></li>
+                  <li><input type="checkbox" id="rozetka2"><label for="rozetka2">Центральная Америка</label></li>
+                  <li><input type="checkbox" id="rozetka2"><label for="rozetka2">Эквадор</label></li>
+                  <li><input type="checkbox" id="rozetka2"><label for="rozetka2">Йемен</label></li>
+                  <li><input type="checkbox" id="rozetka2"><label for="rozetka2">Эфиопия</label></li>
+                  <li><input type="checkbox" id="rozetka2"><label for="rozetka2">Южная Америка</label></li>
+                  <li><input type="checkbox" id="rozetka2"><label for="rozetka2">Ява</label></li>
+                  <li><input type="checkbox" id="rozetka2"><label for="rozetka2">Ямайка</label></li>
+                </ul>
+              </div>
+            
+              <div class="filter-item">
+                <h3 class="filter-title">Бренд</h3>
+                <ul class="filter-list">
+                  <li><input type="checkbox" id="asus"><label for="asus">AGF</label></li>
+                  <li><input type="checkbox" id="rozetka"><label for="rozetka">Alpfa Coffee</label></li>
+                  <li><input type="checkbox" id="other"><label for="other">Ambassador</label></li>
+                  <li><input type="checkbox" id="citrus"><label for="citrus">Avenue 66</label></li>
+                  <li><input type="checkbox" id="eldorado"><label for="eldorado">Cafe cult</label></li>
+                  <li><input type="checkbox" id="allo"><label for="allo">Chicco D'Oro</label></li>
+                  <li><input type="checkbox" id="comfy"><label for="comfy">Coffee365</label></li>
+                  <li><input type="checkbox" id="moyo"><label for="moyo">Ducale Caffe</label></li>
+                  <li><input type="checkbox" id="foxtrot"><label for="foxtrot">EFFRO</label></li>
+                  <li><input type="checkbox" id="allo2"><label for="allo2">EUROCAF</label></li>
+                  <li><input type="checkbox" id="rozetka2"><label for="rozetka2">Farmasi</label></li>
+                  <li><input type="checkbox" id="moyo"><label for="moyo">Fresh Black</label></li>
+                  <li><input type="checkbox" id="foxtrot"><label for="foxtrot">Frico</label></li>
+                  <li><input type="checkbox" id="allo2"><label for="allo2">Gemini</label></li>
+                  <li><input type="checkbox" id="rozetka2"><label for="rozetka2">Jacobs</label></li>
+                  <li><input type="checkbox" id="moyo"><label for="moyo">KARMA</label></li>
+                  <li><input type="checkbox" id="foxtrot"><label for="foxtrot">MacCoffee</label></li>
+                  <li><input type="checkbox" id="allo2"><label for="allo2">Montana</label></li>
+                  <li><input type="checkbox" id="rozetka2"><label for="rozetka2">nescafe dolce gusto</label></li>
+                  <li><input type="checkbox" id="foxtrot"><label for="foxtrot">Newtea</label></li>
+                  <li><input type="checkbox" id="allo2"><label for="allo2">No Brand</label></li>
+                  <li><input type="checkbox" id="rozetka2"><label for="rozetka2">Ostrovit</label></li>
+                  <li><input type="checkbox" id="moyo"><label for="moyo">Ricco</label></li>
+                  <li><input type="checkbox" id="foxtrot"><label for="foxtrot">Rossa</label></li>
+                  <li><input type="checkbox" id="allo2"><label for="allo2">SAQUELLA</label></li>
+                  <li><input type="checkbox" id="rozetka2"><label for="rozetka2">Teahouse</label></li>
+                  <li><input type="checkbox" id="foxtrot"><label for="foxtrot">Unimat Riken</label></li>
+                  <li><input type="checkbox" id="allo2"><label for="allo2">WOSEBA</label></li>
+                  </ul>
+              </div>
+            </div> 
+        </div>
+    </div>
+
+	 <!-- Link To JS -->
+    <script src="script-test01.js"></script>
+    <script src="script-test2.js"></script>
+</body>
+</html>

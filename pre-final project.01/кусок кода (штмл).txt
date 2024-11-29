@@ -1,0 +1,10 @@
+<div class="div-search">
+                <form action="https://www.google.com/search" class="search" id="search-bar">
+                    <input type="search" placeholder="search anything" class="search__input" name="q" method="get">
+        
+                    <div class="search__button" id="search-button">
+                        <i class="ri-search-2-line search__icon"></i>
+                        <i class="ri-close-line search__close"></i>
+                    </div>
+                </form>
+            </div>
