@@ -25,7 +25,7 @@
     </div>
     
     <p style="color: red; font-size: 20px;">Общая сумма: <%= cartItems.reduce((total, item) => total + (item.quantity * item.price), 0) %> грн.</p>
-
+      <button onclick="placeOrder()">Купить</button>
 </body> 
 <script>
         function updateQuantity(itemId, change) {
@@ -39,5 +39,23 @@
                 if (data.success) location.reload();
             });
         }
+
+        function placeOrder() { console.log(121);
+        fetch('/cart/create', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' }
+         
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('Заказ успешно создан!');
+                location.href = '/catalog';
+            } else {
+                alert(data.message);
+            }
+        });
+    }
+
     </script>
 </html>

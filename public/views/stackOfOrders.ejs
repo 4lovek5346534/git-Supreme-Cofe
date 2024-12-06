@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Orders</title>
+  <style>
+    table, th, td {
+      border: 2px solid;
+      border-collapse: collapse;
+      text-align: center;
+      padding: 10px;
+    }
+    table {
+      margin: 20px auto;
+      width: 80%;
+    }
+    select {
+      width: 150px;
+      padding: 5px;
+    }
+    .status-btn {
+      padding: 5px 10px;
+      background-color: #f4e3cf;
+      border: none;
+      cursor: pointer;
+    }
+    .status-btn:hover {
+      background-color: #e0d4ba;
+    }
+  </style>
+</head>
+<body> <h4><a href="/adminPage">AdminPage</a></h4>
+  <h2 style="text-align: center;">Администратор: Управление заказами</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Пользователь</th>
+        <th>Товары</th>
+        <th>Общая сумма</th>
+        <th>Статус</th>
+        <th>Действия</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% orders.forEach(order => { %>
+        <tr>
+          <!-- Пользователь -->
+          <td><%= order.userId ? order.userId.email : 'Гость' %></td>
+          
+          <!-- Товары -->
+          <td>
+            <% order.items.forEach(item => { %>
+              <%= item.coffeeId.name %> (x<%= item.quantity %>)<br>
+            <% }) %>
+          </td>
+
+          <!-- Общая сумма -->
+          <td><%= order.totalSalePrice %> ₽</td>
+
+          <!-- Статус -->
+          <td>
+            <select class="status-select" data-order-id="<%= order._id %>">
+              <% ['Создан', 'Обрабатывается', 'Упаковывается', 'Отправлен', 'Доставлен'].forEach(status => { %>
+                <option value="<%= status %>" <%= status === order.status ? 'selected' : '' %>><%= status %></option>
+              <% }) %>
+            </select>
+          </td>
+
+          <!-- Действия -->
+          <td>
+            <button class="status-btn update-btn" data-order-id="<%= order._id %>">Обновить</button>
+          </td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      document.querySelectorAll('.update-btn').forEach(button => {
+        button.addEventListener('click', async (event) => {
+          const orderId = event.target.dataset.orderId;
+          const statusSelect = document.querySelector(`.status-select[data-order-id="${orderId}"]`);
+          const newStatus = statusSelect.value;
+
+          try {
+            const response = await fetch(`/stackOfOrders/${orderId}/status`, {
+              method: 'PUT',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ status: newStatus })
+            });
+
+            if (response.ok) {
+              alert('Статус обновлён');
+              location.reload();
+            } else {
+              alert('Ошибка при обновлении статуса');
+            }
+          } catch (error) {
+            console.error('Ошибка:', error);
+          }
+        });
+      });
+    });
+  </script>
+</body>
+</html>

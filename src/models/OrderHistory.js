@@ -13,7 +13,11 @@ const OrderHistorySchema = new mongoose.Schema({
   ],
   totalSupplyPrice: { type: Number, required: true }, 
   totalSalePrice: { type: Number, required: true }, 
-  
+  status: {
+    type: String,
+    enum: ['Создан', 'Обрабатывается', 'Упаковывается', 'Отправлен', 'Доставлен'],
+    default: 'Создан'
+  },
 });
 
 

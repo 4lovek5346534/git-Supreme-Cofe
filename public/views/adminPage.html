@@ -15,9 +15,10 @@
     <button> purchase history </button>
     <button>order history</button>
     <br><br>
-    <button> stack of orders</button><br><br>
+    <button id="stackOfOrders"> stack of orders</button><br><br>
     <button id="answer-to-questions"> answer to questions </button>
     <button id="questions"> questions </button>
+    <button id="statistics"> statistics </button>
     <br>
 
 
@@ -37,6 +38,14 @@ document.getElementById('add-coffee').addEventListener('click', () => {
     }); 
      document.getElementById('questions').addEventListener('click', () => {
     window.location.href = '/questions'; 
+    });
+
+    document.getElementById('stackOfOrders').addEventListener('click', () => {
+    window.location.href = '/stackOfOrders'; 
+    });
+    
+    document.getElementById('statistics').addEventListener('click', () => {
+    window.location.href = '/statistics'; 
     });
 </script>
 </html>

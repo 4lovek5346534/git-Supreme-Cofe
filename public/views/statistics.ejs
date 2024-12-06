@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Статистика продаж кофе</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    canvas {
+      display: block;
+      margin: 20px auto;
+      max-width: 90%;
+    }
+    h2 {
+      text-align: center;
+    }
+  </style>
+</head>
+<body><h4><a href="/adminPage">AdminPage</a></h4>
+  <h1>Статистика продаж кофе</h1>
+  <table>
+    <thead>
+      <tr>
+        <th>Название кофе</th>
+        <th>Купленое количество </th>
+      </tr>
+    </thead>
+    <tbody>
+      <% coffeeData.forEach(coffee => { %>
+        <tr>
+          <td><%= coffee._id %></td> <!-- coffee._id будет названием кофе -->
+          <td><%= coffee.totalQuantity %></td> <!-- coffee.totalQuantity будет количеством продаж -->
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+  
+  <!-- Элемент для отображения графика -->
+  <canvas id="coffeeChart"></canvas>
+
+  <script>
+    async function fetchCoffeeData() {
+      try {
+        const response = await fetch('/orders/statistics'); // Обновить URL, если необходимо
+        const data = await response.json();
+
+        const coffeeNames = Object.keys(data);
+        const salesCounts = Object.values(data);
+
+        // Создаём график
+        const ctx = document.getElementById('coffeeChart').getContext('2d');
+        new Chart(ctx, {
+          type: 'bar',
+          data: {
+            labels: coffeeNames,
+            datasets: [{
+              label: 'Количество продаж',
+              data: salesCounts,
+              backgroundColor: 'rgba(75, 192, 192, 0.6)',
+              borderColor: 'rgba(75, 192, 192, 1)',
+              borderWidth: 1
+            }]
+          },
+          options: {
+            responsive: true,
+            plugins: {
+              legend: {
+                position: 'top',
+              },
+              title: {
+                display: true,
+                text: 'Популярность кофейных продуктов'
+              }
+            },
+            scales: {
+              y: {
+                beginAtZero: true
+              }
+            }
+          }
+        });
+      } catch (error) {
+        console.error('Ошибка при загрузке данных статистики:', error);
+      }
+    }
+
+    fetchCoffeeData();
+  </script>
+</body>
+</html>
