@@ -6,7 +6,7 @@ const {validationResult}= require('express-validator');
 const jwt =require('jsonwebtoken');
 const Cart = require('../models/Cart');
 require('dotenv').config();
-
+const OrderHistory = require('../models/OrderHistory');
 const fs = require('fs');
 const path = require('path');
 
@@ -104,12 +104,12 @@ class UserController {
 
             const decoded = jwt.verify(token, process.env.JWT_SECRET);
             const user = await User.findById(decoded.id);
-
+            const userId = decoded.id;
             if (!user) {
                 return res.status(404).json({ message: "Пользователь не найден" });
             }
-
-            res.render('profile', { user });
+            const orders = await OrderHistory.find({ userId }).populate('items.coffeeId');
+            res.render('profile', { user, orders});
 
         } catch (error) {
             console.error("Ошибка при получении профиля:", error);

@@ -90,7 +90,7 @@ router.post('/cart/update/:id', checkRole(['ADMIN', 'USER']), async (req, res) =
     }
 });
 
-router.post('/cart/add', async (req, res) => {
+router.post('/cart/add', checkRole(['ADMIN', 'USER']), async (req, res) => {
     try {
         const { coffeeId } = req.body;
 
@@ -136,7 +136,7 @@ router.post('/cart/add', async (req, res) => {
     }
 });
 
-router.post('/cart/create', async (req, res) => {
+router.post('/cart/create', checkRole(['ADMIN', 'USER']), async (req, res) => {
     try {
         const token = req.cookies.token;
         if (!token) {
@@ -230,7 +230,7 @@ router.post('/cart/create', async (req, res) => {
     }
 });
 
-router.get('/stackOfOrders', async (req, res) => {
+router.get('/stackOfOrders', checkRole(['ADMIN']), async (req, res) => {
     try {
       const orders = await OrderHistory.find().populate('items.coffeeId userId');
      // res.json(orders);
@@ -241,7 +241,7 @@ router.get('/stackOfOrders', async (req, res) => {
     }
   });
 
-  router.put('/stackOfOrders/:orderId/status', async (req, res) => {
+  router.put('/stackOfOrders/:orderId/status',checkRole(['ADMIN']), async (req, res) => {
     const { orderId } = req.params;
     const { status } = req.body;
   
@@ -261,10 +261,7 @@ router.get('/stackOfOrders', async (req, res) => {
     }
   });
 
-
-
-  // Маршрут для отображения страницы статистики
-  router.get('/statistics', async (req, res) => {
+  router.get('/statistics',checkRole(['ADMIN']), async (req, res) => {
     try {
       // Агрегация для подсчета статистики по количеству каждого кофе
       const coffeeStats = await OrderHistory.aggregate([
@@ -291,5 +288,20 @@ router.get('/stackOfOrders', async (req, res) => {
     }
   });
   
+  router.get('/user-orders', checkRole(['USER', 'ADMIN']), async (req, res) => {
+    try {
+        const token = req.cookies.token;
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        const userId = decoded.id;
 
+        // Находим заказы пользователя и подгружаем данные кофе
+        const orders = await OrderHistory.find({ userId }).populate('items.coffeeId');
+
+        // Если возвращаем HTML
+        res.render('partials/orders', { orders });
+    } catch (error) {
+        console.error('Ошибка при получении заказов:', error);
+        res.status(500).send('<p>Ошибка при загрузке заказов</p>');
+    }
+});
 module.exports = router;
