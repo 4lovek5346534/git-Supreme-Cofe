@@ -1,6 +1,6 @@
-document.querySelectorAll('.product').forEach(button => {
+document.querySelectorAll('.product-box').forEach(button => {
     button.addEventListener('click', (event) => {
-        const productElement = event.currentTarget.closest('.product'); 
+        const productElement = event.currentTarget.closest('.product-box'); 
         const productId = productElement.dataset.id;
         const name = productElement.dataset.name;
         

@@ -94,7 +94,9 @@
                        <input type="range" class="range-max" min="0" max="10000" value="7500" step="100">
                    </div>
                </div>
+
                <br>  <!-- -------------------------------------->
+
                <div class="filter-item">
                 <h3 class="filter-title">Вага</h3>
                 <div class="wrapper">
@@ -105,12 +107,12 @@
                   <div class="price-input">
                       <div class="field">
                           <!-- <span>Min</span> -->
-                          <input type="number" class="input-min"  id="minWeight" value="2500">
+                          <input type="number" class="input-min" id="minWeight" value="2500">
                       </div>
                       <div class="separator">-</div>
                       <div class="field">
                           <!-- <span>Max</span> -->
-                          <input type="number" class="input-max"  id="maxWeight"  value="7500">
+                          <input type="number" class="input-max" id="maxWeight" value="7500">
                       </div>
                       <button id="applyWeight" class="OK">OK</button>
                   </div>
@@ -123,6 +125,7 @@
                       <input type="range" class="range-max" min="0" max="10000" value="7500" step="100">
                   </div>
               </div>
+
  <!-- --------------------------------------><br>
                </div>
  

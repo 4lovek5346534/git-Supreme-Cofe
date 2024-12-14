@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SupremeCoffee</title>
+    <link rel="stylesheet" href="/css/main-styles.css">
+</head>
+<body>
+ 
+    <header>
+        <a class="logo" href="/register">SupremeCoffee</a>
+        <div class="search-container">
+            <form id="search-form" method="GET" action="/catalog/search">
+                <input type="text" id="search-query" name="text" placeholder="поиск" >
+                <button type="submit">Поиск</button>
+            </form>
+            <div>
+            <button>за збільшенням ціни</button>
+            <button>по популярности</button>
+            <button>за вагою</button>
+            <button>за назвою</button>
+    </div>
+        </div>
+        <div class="header-icons">
+            <img src="/images/img1/basket.png" alt="Cart Icon" class="icon"id="cart-icon">
+            <img class="avatar" src="<%= imgPath ? imgPath.replace('public/', '/') : '/images/user_img/user.png' %>" alt="User Icon" class="icon" id="user-icon">
+        </div>
+    </header>
+
+    <aside class="filters">
+        <h4>Цена</h4>
+        <input type="text" class="bor" id="minPrice" placeholder="0" > -
+        <input type="text" class="bor" id="maxPrice" placeholder="10000">
+        <button id="applyPrice">OK</button>
+        
+        <hr class="hr1">
+        <h4>Вага</h4>
+        <input type="text" class="bor" id="minWeight" placeholder="0" > -
+        <input type="text" class="bor" id="maxWeight" placeholder="5000">
+        <button id="applyWeight">OK</button>
+
+        <hr class="hr1">
+        <h4>Поиск за країною</h4>
+        <ul>
+            <% uniqueCountries.forEach(country => { %>
+                <li>
+                    <input type="checkbox" name="origin" value="<%= country %>"> <%= country %>
+                </li>
+            <% }) %>
+        </ul>
+    
+        <hr class="hr1">
+        <h4>Вид кави</h4>
+        <ul>
+            <li><input type="checkbox" name="type" value="bean"> Зерно</li>
+            <li><input type="checkbox" name="type" value="ground"> Молота</li>
+        </ul>
+    
+        <hr class="hr1">
+        <h4>Склад кави</h4>
+        <ul>
+            <li><input type="checkbox" name="composition" value="arabica"> Арабіка</li>
+            <li><input type="checkbox" name="composition" value="robusta"> Робуста</li>
+        </ul>
+        <hr class="hr1">
+   <center>   <button id="resetFilters">Сбросить фильтры</button></center>  
+        <hr class="hr1">
+    </aside>
+
+    <main>
+        <div class="products" id="products">
+            <% if (message) { %>
+                <p class="message"><%= message %></p>
+            <% } %>
+            <% coffees.forEach(coffee => { %>
+                <div class="product" data-id="<%= coffee._id %>" data-name="<%= coffee.name %>">
+                    <div class="product-image img-click">
+                        <img src="/images/coffees_img/<%= coffee.imgPath.split('\\').pop() %>" alt="<%= coffee.name %>">
+                    </div>
+                    <div class="product-info">
+                        <span class="product-name"><%= coffee.name %></span>
+                        <span>Вес: <%= coffee.netWeight %> г</span>
+                        <span>Тип: <%= coffee.type === 'bean' ? 'Зерно' : 'Молотая' %></span>
+                        <span>Состав: <%= coffee.composition === 'arabica' ? 'Арабика' : 'Робуста' %></span>
+                        <span class="product-price">Цена: <%= coffee.salePrice %> грн</span>
+                    </div>
+                </div>
+            <% }) %>
+        </div>
+    </main>
+    
+
+    <footer>
+        <div class="footer-social">
+            <span>📸 @SupremeCoffeeUA</span>
+            <span>📧 SupremeCoffee@gmail.com</span>
+            <span>📞 +380977415447</span>
+        </div>
+    </footer>
+
+</body>
+<script src="./js/catalog_product.js"></script>
+<script src="./js/catalog_profile.js"></script>
+<script src="./js/catalog_search.js"></script>
+<script src="./js/catalog_cart.js"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const filters = new URLSearchParams(window.location.search);
+
+    // Установка значений из URL при загрузке страницы
+    function setFiltersFromURL() {
+        const minPrice = filters.get('price')?.split('-')[0] || '';
+        const maxPrice = filters.get('price')?.split('-')[1] || '';
+        document.getElementById('minPrice').value = minPrice;
+        document.getElementById('maxPrice').value = maxPrice;
+
+        const minWeight = filters.get('weight')?.split('-')[0] || '';
+        const maxWeight = filters.get('weight')?.split('-')[1] || '';
+        document.getElementById('minWeight').value = minWeight;
+        document.getElementById('maxWeight').value = maxWeight;
+
+        // Установка чекбоксов из URL
+        document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+            const values = filters.getAll(checkbox.name).join(',').split(',');
+            checkbox.checked = values.includes(checkbox.value);
+        });
+    }
+
+    // Применение фильтра по цене
+    document.getElementById('applyPrice').addEventListener('click', () => {
+        const minPrice = document.getElementById('minPrice').value;
+        const maxPrice = document.getElementById('maxPrice').value;
+        if (minPrice || maxPrice) {
+            filters.set('price', `${minPrice || 0}-${maxPrice || 10000}`);
+        } else {
+            filters.delete('price');
+        }
+        applyFilters();
+    });
+
+    // Применение фильтра по весу
+    document.getElementById('applyWeight').addEventListener('click', () => {
+        const minWeight = document.getElementById('minWeight').value;
+        const maxWeight = document.getElementById('maxWeight').value;
+        if (minWeight || maxWeight) {
+            filters.set('weight', `${minWeight || 0}-${maxWeight || 5000}`);
+        } else {
+            filters.delete('weight');
+        }
+        applyFilters();
+    });
+
+    // Обработка чекбоксов
+    document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+        checkbox.addEventListener('change', () => {
+            const name = checkbox.name;
+            const selectedValues = Array.from(document.querySelectorAll(`input[name="${name}"]:checked`)).map(cb => cb.value);
+
+            if (selectedValues.length) {
+                filters.set(name, selectedValues.join(','));
+            } else {
+                filters.delete(name);
+            }
+            applyFilters();
+        });
+    });
+
+    document.getElementById('resetFilters').addEventListener('click', () => {
+    const currentUrl = new URL(window.location.href);
+    
+    // Очищаем все параметры поиска
+    currentUrl.search = '';
+    
+    // Перенаправляем на URL без параметров
+    window.location.href = currentUrl.toString();
+});
+
+
+    function applyFilters() {
+    // Добавляем текст поиска, если он есть
+    const searchQuery = new URLSearchParams(window.location.search).get('text');
+    if (searchQuery) {
+        filters.set('text', searchQuery);
+    }
+    const url = `/catalog/filters?${filters.toString()}`;
+    window.location.href = url;
+}
+
+
+    setFiltersFromURL(); // Инициализация значений при загрузке
+});
+
+</script>
+
+</html>

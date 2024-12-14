@@ -17,14 +17,11 @@ router.get('/catalog/cart', checkRole(['ADMIN', 'USER']), async (req, res) => {
             return res.render('cart', { cartItems: [] });
         }
 
-        // Получаем ID всех товаров в корзине и находим их в коллекции Coffee
         const coffeeIds = cart.items.map(item => item.coffeeId);
         const cartItems = await Coffee.find({ '_id': { $in: coffeeIds } });
 
-        // Создаем словарь для быстрого поиска товаров по ID
         const coffeeMap = new Map(cartItems.map(coffee => [coffee._id.toString(), coffee]));
 
-        // Форматируем элементы корзины, учитывая удаленные товары
         const formattedCartItems = cart.items.map(item => {
             const coffee = coffeeMap.get(item.coffeeId.toString());
             if (coffee) {
@@ -38,7 +35,7 @@ router.get('/catalog/cart', checkRole(['ADMIN', 'USER']), async (req, res) => {
                 return {
                     _id: item._id,
                     coffeeName: "Удалено",
-                    price: 0, // Устанавливаем цену в 0, если товар удален
+                    price: 0, 
                     quantity: item.quantity
                 };
             }
@@ -149,7 +146,6 @@ router.post('/cart/create', checkRole(['ADMIN', 'USER']), async (req, res) => {
 
         console.log(`Создание заказа для пользователя с ID: ${userId}`);
 
-        // Получаем корзину пользователя
         const cart = await Cart.findOne({ userId }).populate('items.coffeeId');
         if (!cart || cart.items.length === 0) {
             console.warn('Корзина пуста или не найдена');
@@ -158,12 +154,11 @@ router.post('/cart/create', checkRole(['ADMIN', 'USER']), async (req, res) => {
 
         console.log('Корзина найдена, количество товаров:', cart.items.length);
 
-        // Проверяем наличие товаров на складе
         const insufficientItems = [];
         for (const item of cart.items) {
             if (!item.coffeeId) {
                 console.warn(`Товар с ID ${item._id} не найден в базе данных`);
-                continue; // Пропускаем товар, если он удалён
+                continue;
             }
             if (item.coffeeId.quantity < item.quantity) {
                 insufficientItems.push({
@@ -174,6 +169,12 @@ router.post('/cart/create', checkRole(['ADMIN', 'USER']), async (req, res) => {
                     `Недостаточное количество для товара "${item.coffeeId.name}": ` +
                     `Доступно ${item.coffeeId.quantity}, требуется ${item.quantity}`
                 );
+                return res.status(400).json({
+                    success: false,
+                    message: `Недостаточное количество для товара ${item.coffeeId.name}. Доступно ${item.coffeeId.quantity}, требуется ${item.quantity}`,
+                    insufficientItems
+                });
+
             }
         }
 
@@ -181,14 +182,14 @@ router.post('/cart/create', checkRole(['ADMIN', 'USER']), async (req, res) => {
             console.error('Некоторые товары недоступны в нужном количестве:', insufficientItems);
             return res.status(400).json({
                 success: false,
-                message: 'Некоторые товары недоступны в нужном количестве',
+                message: `Недостаточное количество для товара ${item.coffeeId.name}. Доступно ${item.coffeeId.quantity}, требуется ${item.quantity}`,
                 insufficientItems
             });
         }
 
-        // Создаём заказ
+
         const orderItems = cart.items
-            .filter(item => item.coffeeId) // Исключаем удалённые товары
+            .filter(item => item.coffeeId) 
             .map(item => ({
                 coffeeId: item.coffeeId._id,
                 quantity: item.quantity,
@@ -209,7 +210,6 @@ router.post('/cart/create', checkRole(['ADMIN', 'USER']), async (req, res) => {
 
         console.log('Заказ успешно создан:', order);
 
-        // Обновляем количество товаров на складе
         for (const item of cart.items) {
             if (item.coffeeId) {
                 item.coffeeId.quantity -= item.quantity;
@@ -218,7 +218,6 @@ router.post('/cart/create', checkRole(['ADMIN', 'USER']), async (req, res) => {
             }
         }
 
-        // Очищаем корзину
         cart.items = [];
         await cart.save();
 
