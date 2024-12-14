@@ -9,6 +9,7 @@
 
     .left-block-filters {
         /*margin-top: 1.79rem;*/
+        max-height:620px;
         height: auto;
         width: 320px; /* 200*/
         background: var(--container-color);
@@ -18,7 +19,24 @@
         z-index: 4;
         box-shadow: 0.7px 0px 4px hsla(0, 0%, 98%, 0.4);
     }
+/* Стили для прокрутки */
+    .left-block-filters::-webkit-scrollbar {
+        width: 8px; /* Ширина скроллбара */ 
+    }
 
+    .left-block-filters::-webkit-scrollbar-track {
+        background: #2e2e37; /* Цвет фона скроллбара */
+        border-radius: 4px; /* Радиус для сглаживания */
+    }
+
+    .left-block-filters::-webkit-scrollbar-thumb {
+        background: #17A2B8; /* Цвет бегунка */
+        border-radius: 4px; /* Радиус бегунка */
+    }
+
+    .left-block-filters::-webkit-scrollbar-thumb:hover {
+        background: #0f8aa1; /* Цвет бегунка при наведении */
+    }
     /*.left-block-filters .sidebar_menu {
         position: relative;
         
@@ -138,6 +156,23 @@
       overflow-y: auto;
       border-top: 2px solid #ccc;
       border-radius: 2px;
+    }
+    .filter-list::-webkit-scrollbar {
+        width: 8px; /* Ширина скроллбара */
+    }
+    
+    .filter-list::-webkit-scrollbar-track {
+        background: #2e2e37; /* Цвет фона скроллбара */
+        border-radius: 4px; /* Радиус для сглаживания */
+    }
+    
+    .filter-list::-webkit-scrollbar-thumb {
+        background: #17A2B8; /* Цвет бегунка */
+        border-radius: 4px; /* Радиус бегунка */
+    }
+    
+    .filter-list::-webkit-scrollbar-thumb:hover {
+        background: #0f8aa1; /* Цвет бегунка при наведении */
     }
     
     .filter-list li {

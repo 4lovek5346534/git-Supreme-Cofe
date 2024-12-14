@@ -30,7 +30,8 @@
 
             <div class="div-icons">
                 <!-- Cart Icon --> 
-            <i class="bx bx-shopping-bag" id="cart-icon" data-quantity="0"></i>
+                <i class="bx bx-shopping-bag" id="cart-icon" data-quantity="<%= countOfCartItem || 0 %>"></i>
+
             <!-- User Icon -->
             <img style="width:40px; height:40px; margin-right: 10px;
             border-radius: 90%;  
@@ -63,7 +64,7 @@
      <div class="div-container container">
 
         <!-- !!!!! Filter !!!!! --> 
-	 <aside class="left-block-filters">
+	 <aside class="left-block-filters" >
         <br>
              <div class="filter-block">
                <div class="filter-item">
@@ -94,7 +95,9 @@
                        <input type="range" class="range-max" min="0" max="10000" value="7500" step="100">
                    </div>
                </div>
+
                <br>  <!-- -------------------------------------->
+
                <div class="filter-item">
                 <h3 class="filter-title">Вага</h3>
                 <div class="wrapper">
@@ -105,12 +108,12 @@
                   <div class="price-input">
                       <div class="field">
                           <!-- <span>Min</span> -->
-                          <input type="number" class="input-min"  id="minWeight" value="2500">
+                          <input type="number" class="input-min" id="minWeight" value="2500">
                       </div>
                       <div class="separator">-</div>
                       <div class="field">
                           <!-- <span>Max</span> -->
-                          <input type="number" class="input-max"  id="maxWeight"  value="7500">
+                          <input type="number" class="input-max" id="maxWeight" value="7500">
                       </div>
                       <button id="applyWeight" class="OK">OK</button>
                   </div>
@@ -123,6 +126,7 @@
                       <input type="range" class="range-max" min="0" max="10000" value="7500" step="100">
                   </div>
               </div>
+
  <!-- --------------------------------------><br>
                </div>
  
@@ -157,14 +161,14 @@
                
           <center>   <button id="resetFilters">Сбросить фильтры</button></center>  
               
-             
+             <br>
          
       </aside>
  
       <!-- DropDown -->
       <div class="div-dropdown container">
          <div class="dropdown-text">
-             <h3>Знайдено товарів (4000)</h3>
+             <h3>Знайдено товарів <%= count %></h3>
          </div>
          <div class="dropdown">
          <div class="select">
@@ -206,8 +210,8 @@
                     </div>
                     <div class="div-price-buybutton">
                         <div class="div-price"><span class="price">$<%= coffee.salePrice %></span></div>
-                        <i class="bx bx-shopping-bag add-cart"></i>   
-                     </div>
+                        <i class="bx bx-shopping-bag add-cart" data-coffee-id="<%= coffee._id %>"></i>   
+                   </div>
                 </div>
             <% }) %>
         </div>
@@ -229,6 +233,29 @@
 </body>
 
 <script>
+document.querySelectorAll('.add-cart').forEach(button => {
+    button.addEventListener('click', () => {
+        const coffeeId = button.getAttribute('data-coffee-id');  // Получаем ID кофе из атрибута
+
+        fetch('/cart/add', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ coffeeId: coffeeId })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('Товар добавлен в корзину');location.reload();
+            } else {
+                alert('Ошибка при добавлении в корзину');
+            }
+        })
+        .catch(error => {
+            console.error('Ошибка:', error);
+        });
+    });
+});
+
     document.addEventListener('DOMContentLoaded', () => {
         const filters = new URLSearchParams(window.location.search);
     

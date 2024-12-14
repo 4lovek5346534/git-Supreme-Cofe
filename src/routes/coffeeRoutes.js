@@ -8,7 +8,7 @@ const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
 const checkRole = require('../middlewares/auth/checkRole'); 
 const fs = require('fs');
-
+const Cart = require('../models/Cart'); 
 const router = express.Router();
 
 const storage = multer.diskStorage({
@@ -28,7 +28,7 @@ router.get('/catalog', async (req, res) => {
     const uniqueCountries = await Coffee.distinct("origin");
    
    
-   
+   let countOfCartItem=0;
     let imgPath = null;  // Default value in case the user is not logged in
     try{
      const token = req.cookies.token;
@@ -39,9 +39,10 @@ router.get('/catalog', async (req, res) => {
 
       if (userId) {
         const user = await User.findById(userId);
-
+        const cart= await Cart.findOne({ userId });
         if (user) {
           imgPath = user.imgPath; // Only assign imgPath if user is found
+          countOfCartItem=cart.items.reduce((total, item) => total + item.quantity, 0);
         }
       }
     }
@@ -51,7 +52,8 @@ router.get('/catalog', async (req, res) => {
     
 
     const coffees = await Coffee.find(); 
-    res.render('catalog', { coffees,uniqueCountries, message: null,imgPath  }); 
+    const count = await Coffee.countDocuments(); 
+        res.render('catalog', { coffees,uniqueCountries, message: null,imgPath,count, countOfCartItem  }); 
   } catch (error) {
     console.error('Error fetching coffees:', error);
     res.status(500).send('Server error');
@@ -130,12 +132,14 @@ router.get('/catalog/search', async (req, res) => {
   if (!searchText) {
       return res.redirect('/catalog');
   }
-
+ let countOfCartItem=0;
   try {
 
     let imgPath = null;  // Default value in case the user is not logged in
     try{
      const token = req.cookies.token;
+
+    
     if (token) {
 
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
@@ -143,9 +147,12 @@ router.get('/catalog/search', async (req, res) => {
 
       if (userId) {
         const user = await User.findById(userId);
+        const cart= await Cart.findOne({ userId });
 
         if (user) {
           imgPath = user.imgPath; // Only assign imgPath if user is found
+          countOfCartItem=cart.items.reduce((total, item) => total + item.quantity, 0);
+
         }
       }
     }
@@ -156,10 +163,11 @@ router.get('/catalog/search', async (req, res) => {
     const coffees = await Coffee.find({ name: { $regex: searchText, $options: 'i' } });
 
     if (coffees.length === 0) {
-      return res.render('catalog', { uniqueCountries, message: "Ничего не найдено", coffees: [] ,imgPath});
+      const count=0;
+      return res.render('catalog', { uniqueCountries, message: "Ничего не найдено", coffees: [] ,imgPath, count, countOfCartItem});
     }
-
-    res.render('catalog', { coffees, uniqueCountries, message: null ,imgPath});
+    const count = coffees.length;
+    res.render('catalog', { coffees, uniqueCountries, message: null ,imgPath,count, countOfCartItem});
   } catch (error) {
     console.error('Ошибка при поиске кофе:', error);
     res.status(500).send('Ошибка сервера. Пожалуйста, попробуйте позже.');
@@ -195,7 +203,7 @@ router.get('/catalog/filters', async (req, res) => {
   if (composition) {
       query.composition = { $in: composition.split(',') };
   }
-
+  let countOfCartItem=0;
   try {
     
     let imgPath = null;  // Default value in case the user is not logged in
@@ -208,9 +216,12 @@ router.get('/catalog/filters', async (req, res) => {
 
       if (userId) {
         const user = await User.findById(userId);
+        const cart= await Cart.findOne({ userId });
 
         if (user) {
           imgPath = user.imgPath; // Only assign imgPath if user is found
+          countOfCartItem=cart.items.reduce((total, item) => total + item.quantity, 0);
+
         }
       }
     }
@@ -220,9 +231,11 @@ router.get('/catalog/filters', async (req, res) => {
       const coffees = await Coffee.find(query);
       const uniqueCountries = await Coffee.distinct("origin");
       if (coffees.length === 0) {
-        return res.render('catalog', { uniqueCountries, message: "Ничего не найдено", coffees: [],imgPath });
+        const count=0;
+        return res.render('catalog', { uniqueCountries, message: "Ничего не найдено", coffees: [],imgPath ,count,countOfCartItem});
       }
-      res.render('catalog', { coffees, uniqueCountries, message: null,imgPath });
+      const count = coffees.length;
+      res.render('catalog', { coffees, uniqueCountries, message: null,imgPath,count,countOfCartItem });
   } catch (error) {
       console.error('Ошибка при фильтрации кофе:', error);
       res.status(500).send('Ошибка сервера');
@@ -296,7 +309,6 @@ router.post('/catalog/:name/:id/ask', async (req, res) => {
     res.status(500).json({ message: 'Ошибка при добавлении вопроса', error: error.message });
   }
 });
-
 
 
 router.get('/AnswerToQuestions', checkRole(['ADMIN']), async (req, res) => {

@@ -24,6 +24,25 @@ body{
     /*background-color: var(--container-color);*/
     background-image: linear-gradient(rgba(0,8,51,0.9), rgba(0,8,51,0.9)), url(img/coffee2.jpg);
     background-size: cover;
+    overflow-y: auto;
+}
+
+body::-webkit-scrollbar {
+    width: 8px; /* Ширина скроллбара */
+}
+
+body::-webkit-scrollbar-track {
+    background: #2e2e37; /* Цвет фона скроллбара */
+    border-radius: 4px; /* Радиус для сглаживания */
+}
+
+body::-webkit-scrollbar-thumb {
+    background: #17A2B8; /* Цвет бегунка */
+    border-radius: 4px; /* Радиус бегунка */
+}
+
+body::-webkit-scrollbar-thumb:hover {
+    background: #0f8aa1; /* Цвет бегунка при наведении */
 }
 section {
     padding: 4rem 0 3rem;
